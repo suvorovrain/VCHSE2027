@@ -1,0 +1,568 @@
+\def\letus{%
+    \mathord{\setbox0=\hbox{$\exists$}%
+             \hbox{\kern 0.125\wd0%
+                   \vbox to \ht0{%
+                      \hrule width 0.75\wd0%
+                      \vfill%
+                      \hrule width 0.75\wd0}%
+                   \vrule height \ht0%
+                   \kern 0.125\wd0}%
+           }%
+}
+
+\section{Лекция 7 14.04.25}
+\subsection{Численные методы линейной алгебры}
+
+Рассмотрим систему \( Ax = b \), \( A \) — неособенная
+
+\begin{tabular}{c|}
+     \(A \rightarrow A \) + \( \Delta A \)\\
+     \(b \rightarrow b \) + \( \Delta b \)
+\end{tabular}
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (3.1,0.7) {%
+    \begin{minipage}{10cm}
+    \(\Rightarrow \tilde{x} = x + \Delta x \text{ - возмущение системы}\)
+    \end{minipage}
+  };
+}
+
+\[(A + \Delta A)(x + \Delta x) =b + \Delta b\]
+
+Тогда
+\(\Delta A x + (A + \Delta A) \Delta x = \Delta b\)
+
+\leftskip=1.2cm \(\Delta A (x + \Delta x) + A \Delta x = \Delta b\)
+
+\leftskip=1.2cm \(\Delta A \tilde{x} + A \Delta x = \Delta b \Rightarrow \Delta x = A^{-1}(-\Delta A \tilde{x} + \Delta b) \Rightarrow\)
+\[\Rightarrow \| \Delta x \| \leq \| A^{-1} \| (\| \Delta A \| \| \tilde{x} \| + \| \Delta b \|)\]
+
+\[\frac{\| \Delta x \|}{\| \tilde{x} \|} \leq \| A^{-1} \| \left(\| \Delta A \| + \frac{\| \Delta b \|}{\| \tilde{x} \|}\right) = \| A^{-1} \| \| A \| \left(\frac{\| \Delta A \|}{\| A \|} + \frac{\| \Delta b \|}{\| A \| \cdot \| \tilde{x} \|}\right)\]
+
+огрубим оценку \(\| A \| \cdot \| \tilde{x} \| \geq \| A \tilde{x} \| \approx \| b \|\)
+
+
+\[\frac{\| \Delta x \|}{\| \tilde{x} \|} \leq \| A^{-1} \| \| A \| \left(\frac{\| \Delta A \|}{\| A \|} + \frac{\| \Delta b \|}{\| b \|}\right)\]
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (3.75,0) {%
+    \begin{minipage}{10cm}
+    \swarrow
+    \end{minipage}
+  };
+} 
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (9.25,0.5) {%
+    \begin{minipage}{10cm}
+    \searrow
+    \end{minipage}
+  };
+}
+
+
+\tikz[remember picture, overlay]{
+\node[anchor=west] at (-0.5,0.5) {%
+    \begin{minipage}{10cm}
+    ошибка в решении
+    \end{minipage}
+  };
+  \node[anchor=west] at (5,1) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (3.5,0) {%
+    \begin{minipage}{10cm}
+    коэф-т распре-\\деления ошибки
+    \end{minipage}
+  };
+  \node[anchor=west] at (9.75,0.5) {%
+    \begin{minipage}{10cm}
+    \(\text{ошибка от } b\)
+    \end{minipage}
+  };
+  \node[anchor=west] at (7.5,1) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (6.75,0.5) {%
+    \begin{minipage}{10cm}
+    \(\text{ошибка от } A\)
+    \end{minipage}
+  };
+}
+
+
+\[\text{cond}(A) = \| A^{-1} \| \cdot \| A \| \text{ - число обусловленности матрицы}\]
+
+\( A\) — особенная \rightarrow \[\text{cond}(A) = +\infty \quad (\text{т.к. } \| A^{-1} \|\] неограниченно возрастает при приближении к особенной)
+
+\underline{Замечание:} \(\text{cond}(A) = \| A^{-1} \| \cdot \| A \| \geq \| A^{-1}A \| = \| E \| = 1 \Rightarrow \text{cond}(A) \geq 1 \quad \forall A\)
+
+Если \(\text{cond}(A)\) невелико, то матрица \textbf{хорошо обусловлена}, иначе \textbf{плохо обусловлена}
+
+\underline{Примеры}\quad 1) \( Q \) - ортогональная, т.е. \( QQ^T = E \)
+
+\[\text{рассмотрим норму: }\|x\|_2 = \sqrt{\sum_{i=1}^n |x_i|^2}, \|A\|_2 = \sup_{\|x\|_2=1} \|Ax\|\]
+
+из алгебры известно, что для ортогональной \(Q\) верно \(\|Qx\|_2 = \|x\|_2\) \Rightarrow
+
+\begin{tabular}{c|}
+\[\Rightarrow \|Q\|_2 = \sup_{\|x\|_2=1} \|Qx\| = \sup_{\|x\|=1} \|x\|_2 = 1\]\\
+\[\|Q^{-1}\|_2 = /Q^{-1}=Q^T/ = \|Q^T\|_2 = \|Q\|_2 = 1\]
+\end{tabular}
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (9,0.6) {%
+    \begin{minipage}{10cm}
+    \(\Rightarrow\text{cond}_2(Q)=1\)
+    \end{minipage}
+  };
+}
+
+Если \( R = dQ \), где \( Q \) - ортогональная, то \(\text{cond}_2(R) = 1\)
+
+\underline{Примеры ортогональных матриц:}
+
+\[
+\begin{pmatrix}
+1 & 0 \\
+0 & 1
+\end{pmatrix},
+\quad
+\begin{pmatrix}
+1 & 0 \\
+0 & -1
+\end{pmatrix},
+\quad
+\begin{pmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end{pmatrix}
+\]
+
+\textbf{Неформальный вывод:} ортогональные матрицы очень хорошо подходят для вычислительных алгоритмов
+
+2) \( H = (h_{ij}) = \frac{1}{i+j+1} \) — матрицы Гильберта
+
+\[ H_3 = 
+\begin{pmatrix}
+1 & \frac{1}{2} & \frac{1}{3} \\
+\frac{1}{2} & \frac{1}{3} & \frac{1}{4} \\
+\frac{1}{3} & \frac{1}{4} & \frac{1}{5}
+\end{pmatrix} \]
+
+\[ \begin{aligned}
+\text{cond}_1 (H_2) &\approx 19.3 \\
+\text{cond}_2 (H_3) &\approx 524 \\
+\text{cond}_2 (H_n) &\approx O\left(\frac{34^n}{\sqrt{n}}\right)
+\end{aligned} \]
+
+3) \( V_n \) — матрицы Вандермонда
+
+\[ \text{cond}_2 (V_h) \geq \sqrt{2} \frac{(1 + \sqrt{2})^{n-1}}{\sqrt{n+1}} \text{— экспоненциальный рост}\]
+
+4) Пример системы уравнений:
+
+\[ \begin{cases}
+u + 10v = 11 \\
+100u + 1001v = 1101
+\end{cases}
+\Rightarrow 
+\begin{cases}
+u = 1 \\
+v = 1
+\end{cases} \]
+
+\[ \begin{cases}
+u + 10v = 11.01 \\
+100u + 1001v = 1101
+\end{cases}
+\Rightarrow 
+\begin{cases}
+u = 11.01 \\
+v = 0
+\end{cases} \]
+
+\underline{Упр:} убедиться, что число обусловленности матрицы системы весьма велико
+
+\vspace{10mm}
+\underline{Определение:} Квадратная матрица имеет \textit{диагональное преобладание}, если \(\forall i=1..n\)
+\[ |a_{ii}| \geq \sum_{j\neq i} |a_{ij}| \]
+и хотя бы одно неравенство является строгим. Если все неравенства строги, то имеется \textbf{строгое диагональное преобладание} (далее рассматриваем только его)
+
+\underline{Th} (Адамар) (алгебра)
+Матрица со строгим диагональным преобладанием неособенна
+
+\underline{Th} (Алберг-Нильсон)
+Пусть \(A\) — квадратная матрица с диагональным преобладанием
+\[\letus \alpha = \min_{1 \leq i \leq n} \left\{ |a_{ij}| - \sum_{j\neq i} |a_{ij}| \right\} \text{ - количественная мера д.п.}\]
+Тогда \( \|A^{-1}\|_{\infty} \leq \frac{1}{\alpha} \) и, как следствие, \( \text{cond}_{\infty}(A) \leq \frac{1}{\alpha} \|A\|_{\infty}\)
+
+\vspace{10mm}
+Напоминание: \[ \|A\|_{\infty} = \max_{1 \leq i \leq n} \sum_{j=1}^{n} |a_{ij}|, \quad \|x\|_{\infty} = \max_{1 \leq i \leq n} |x_i|\quad \text{Чебышёвская норма}\]
+\vspace{10mm}
+
+5) построение кубического сплайна
+
+\[ \frac{1}{6}
+\begin{pmatrix} 
+2(h_1+h_2) & h_2 & 0 & \cdots & 0 \\ 
+h_2 & 2(h_2+h_3) & h_3 & \ddots & \vdots \\ 
+0 & h_3 & 2(h_3+h_4) & \ddots & 0 \\ 
+\vdots & \ddots & \ddots & \ddots & h_{n-1} \\ 
+0 & \cdots & 0 & h_{n-1} & d(h_{n-1}+h_n) 
+\end{pmatrix} 
+\]
+
+\(\text{мера диагонального преобладания: } \frac{1}{6} min \left\{ 2h_1 + h_2, 2h_n + h_{n-1}, min_{2 \leq i \leq 2n} \left( h_i + h_{i+1} \right) \right\} \quad (v)\)
+
+\(\text{норма: } \frac{1}{6} max \left\{ 2h_1 + 3h_2, 2h_n + 3h_{n+1}, 3max_{2 \leq i \leq 2n} \left( h_i + h_{i+1} \right) \right\} \quad (w)\)
+
+\[\letus h_i = h=const \quad (v) = \frac{1}{3} h, (w) = h \implies \text{cond}_{\infty}(A) \leq 3\]
+
+Ещё один аргумент, что кубический сплайн — "хороший" объект
+
+6) \( A = \begin{pmatrix} x & 0 & \cdots & 0 \\ 0 & x & \ddots & \vdots \\ \vdots & \ddots & \ddots & \vdots \\ 0 & \cdots & \cdots & x\end{pmatrix} \)  
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (5,1.75) {%
+    \begin{minipage}{10cm}
+    \(\rightarrow \text{cond}(A)\text{ может быть сколь угодно большим}\)
+    \end{minipage}
+  };
+}
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (5,1.5) {%
+    \begin{minipage}{10cm}
+    \(\rightarrow \text{система решается тривиально}\)
+    \end{minipage}
+  };
+}
+
+Высокая обусловленность не влечёт высокой чувствительности конкретной матрицы к конкретному возмущению
+
+В частных случаях возможны альтернативные метрики
+
+\underline{Example: } Калиткин, Юхно, Кузьмина "Количественный критерий обусловленности систем линейных алгебраических уравнений"; журнал "Математическое моделирование"; \href{https://www.mathnet.ru/php/archive.phtml?wshow=paper&jrnid=mm&paperid=3070&option_lang=rus}{ссылка}
+
+
+\subsection{Решение СЛАУ}
+
+\( Ax = b \): метод Гаусса и в путь
+
+\vspace{5mm}
+Направления борьбы:
+\begin{itemize}
+    \item снижение асимптотики
+    \item снижение обусловленности
+    \item итерационные методы
+\end{itemize}
+
+\subsubsection{Снижение обусловленности}
+
+\begin{enumerate}
+    \item Если \( A \) — симметричная положительно определённая \((\forall x: \text{ } x^T A x > 0 )\) \\
+    \(\underline{Th}: \exists ! \text{ неособенная нижнетреугольная матрица }C \), т.ч. \\
+    \[
+    A = CC^T \quad \text{(разложение Холецкого)}
+    \]
+
+    \underline{Доказательство:} конструктивный алгоритм построения разложения
+
+    \underline{Метод:} \( Ax = b \Rightarrow CC^T x = b \Rightarrow\)
+    \begin{align*}
+        (1) & \quad Cy = b \\
+        (2) & \quad C^T x = y \\
+    \end{align*}
+    \[
+    \text{cond}(C) = \sqrt{\text{cond}(A)} \quad \text{(по построению } C \text{)}
+    \]
+
+    \underline{Замечание:} есть модификации для несимметричных положительно определённых матриц
+
+    \item Ортогональные преобразования:
+    \[
+    \text{cond}(AB) = \| (AB)^{-1} \| \cdot \| AB \|=\|B^{-1}A^{-1}\| \cdot \|AB\| \leq
+    \]\[\leq 
+    \| A^{-1} \| \cdot \| B^{-1} \| \cdot \| A \| \cdot \| B \| \leq
+    (\| A^{-1} \| \cdot \| A \|)(\| B^{-1} \| \cdot \| B \|) = \text{cond}(A) \cdot \text{cond}(B)
+    \]
+
+    Если \( B \) — ортогональная, то
+    \(
+    \text{cond}(AB) \leq \text{cond}(A)
+    \)
+
+    \(\Rightarrow\) умножением на ортогональную матрицу можно привести исходную к более простому виду, не увеличив обусловленность
+
+    Тогда как преобразование к треугольному виду в методе Гаусса наоборот могут увеличивать число обусловленности
+
+    \underline{Th}: у любой матрицы существует QR-разложение, т.е. представление 
+    \(A = QR\), где } \(Q\) — ортогональная, \(R\) — верхне-треугольная.
+    
+    \underline{Метод построения:} метод Хаусхолдера
+    
+    Метод: \( Ax = b \Rightarrow Q(Rx) = b \Rightarrow Rx = Q^{-1} b \Rightarrow Rx = Q^{T} b \) треугольная система, \( \text{cond}(R) = \text{cond}(A) \)
+
+    Считается, что наивысшей устойчивостью обладает метод на основе сингулярного разложения
+    
+    \underline{рассмотрим систему}
+    \(
+    \begin{cases} 
+    Ax = \sigma y \\ 
+    A^Ty = \sigma x 
+    \end{cases}
+    \)
+    \rightarrow
+    \(
+    \left( \begin{array}{cc}
+    0 & A^{T} \\
+    A & 0
+    \end{array} \right)
+    \left( \begin{array}{c}
+    x \\
+    y
+    \end{array} \right) = \sigma \left( \begin{array}{c}
+    x \\
+    y
+    \end{array} \right)
+    \)
+
+    \(\text{симметричная матрица} \Rightarrow \text{неособенная} \Rightarrow \text{разрешима}\)
+
+\leftskip=0cm неотрицательные \( \sigma\) являются решениями — сингулярные числа
+
+\leftskip=3.3cm \( x \) — правый сингулярный вектор
+
+\leftskip=3.3cm \( y \) — левый сингулярный вектор  
+
+\leftskip=0cm
+
+    \underline{Th:} о сингулярном разложении
+    
+    Для \(A_{m \times n}\) существуют ортогональные матрицы \(U_{m \times m}\) и \(V_{n \times n}\), такие что
+    \[A = U \Sigma V^T, \quad \text{где} \quad \Sigma \text{ имеет вид } \Sigma = 
+    \begin{pmatrix}
+    \sigma_1 & 0 & \cdots & 0 \\ 
+    0 & \sigma_2 & \ddots  & 0 \\ 
+    \vdots & \ddots & \ddots & \vdots \\
+    0 & 0 & \cdots & \sigma_n
+    \end{pmatrix}\]
+    
+где \(\sigma_i\) — сингулярные числа (или нули)
+
+    \underline{Метод:} \(Ax=b \Rightarrow U \Sigma V^Tx=b \Rightarrow x=V \Sigma^{-1}M^Tb\), вычислений стало намного больше, но процесс более устойчив!
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (7.4,0.8) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (6.5,0.3) {%
+    \begin{minipage}{10cm}
+    тоже диагональная
+    \end{minipage}
+  };
+}
+
+\end{enumerate}
+
+\underline{Другие приложения:}
+\begin{enumerate}
+    \item близка ли матрица к особенной? \\
+    \text{идея: det}\(A\)\approx 0 \\
+    \text{проблема: det}\((aA)=a^nA\) \\
+    \text{другая идея:} \(A=U \Sigma V^T; \quad U,V \text{ — неособенные; }\)\\\( \Sigma \text{ - диагональная (и неособенная, если все сингулярные числа } > \epsilon )\)
+
+    \item ранг матрицы \\
+    \text{идея: приведение к ступенчатому виду}\\
+    \text{проблема: вычисление неустойчиво}\\
+    \text{другая идея: }\(A=U \Sigma V^T\)\\\text{ортогональное преобразование сохраняют ЛНЗ/ЛЗ}\\\text{ранг=количество ненулевых сингулярных чисел}
+
+    \item малоранговые приближения \\
+    \underline{Th:} (Эккарта-Янга)
+
+    Пусть \(r<rank(A).\text{Рассмотри все матрицы B, такие что } rank(B)=r\\\text{Tогда } min\|A-B\|_2=\|A-A_r\|\text{, где }A_r \text{ получена из } A \text{ заменой матрицы }\Sigma \text{ на } \Sigma_r \\\text{ в её сингулярном разложении, где}\)
+    \[
+    \Sigma_r = 
+    \begin{pmatrix}
+    \sigma_1 & 0 & \cdots & 0 & 0 & \cdots & 0 \\
+    0 & \sigma_2 & \ddots & \vdots & \vdots & \ddots & \vdots\\
+    \vdots & \ddots & \ddots & \vdots & \vdots & \ddots & \vdots \\
+    0 & \cdots & \cdots & \sigma_r & \vdots & \ddots &\vdots \\
+    0 & \cdots & \cdots & \cdots & 0 & \ddots  & \vdots\\
+    \vdots & \ddots & \ddots & \ddots & \ddots & \ddots & \vdots \\
+    0 & \cdots & \cdots & \cdots & \cdots & \cdots & 0
+    \end{pmatrix}
+    \]
+    
+    \underline{Пример:} Изображение 800×533 пикселя; rank \(\approx\) (533)\\
+    Можно взять малоранговое приближение и снизить объём хранения
+\end{enumerate}
+
+\subsubsection{Снижение асимптотики}
+
+\underline{Метод прогонки} (1952, И.М.Гельфанд и О.В.Локуциевский)\\рассмотрим СЛАУ с трёхдиагональной матрицей
+
+\[
+\begin{cases} 
+\quad\quad\quad\quad b_1 x_1 + c_1 x_2= d_1 \\ 
+a_i x_{i-1}\space\space + b_i x_i + c_i x_{i+1} = d_i \\ 
+a_n x_{n-1} + b_n x_n\quad\quad\quad = d_n 
+\end{cases}
+\]
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (11,1.5) {%
+    \begin{minipage}{10cm}
+    \(2 \leq i \leq n-1\)
+    \end{minipage}
+  };
+}
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (11,1.25) {%
+    \begin{minipage}{10cm}
+    \(a_1=c_n=0\)
+    \end{minipage}
+  };
+}
+
+Выразим \(x_i=\xi_{i+1} x_{i+1}+\eta_{i+1}\)
+
+Тогда \(x_{i-1}=\xi_{i}x_i+\eta_i\) и \(a_i(\xi_ix_i+\eta_i)+b_ix_i+c_ix_{i+1}=d_i\) \Rightarrow \(x_i = -\frac{c_i}{a_i \xi_i + b_i} x_{i+1} + \frac{d_i - a_i \eta_i}{a_i \xi_i + b_i} \Rightarrow\) \Rightarrow
+\[
+\left\{
+\begin{aligned}
+&\xi_{i+1} = -\frac{c_i}{a_i \xi_i + b_i} \\
+&\eta_{i+1} = \frac{d_i - a_i \eta_i}{a_i \xi_i + b_i}
+\end{aligned}
+\right.
+\]
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (4,0.8) {%
+    \begin{minipage}{10cm}
+    \( \xi_1, \eta_1 \) стоят при \( a_1 = 0 \Rightarrow\) любые значения, далее рекуррентно вычисляем \( \xi_i \), \( \eta_i \)
+    \end{minipage}
+  };
+}
+
+Далее \( \xi_{i+1} = -\frac{c_n}{a_n \xi_n + b_n}=0 \Rightarrow \) \( x_n = \xi_{n+1} x_{n+1} + \eta_{n+1} = \eta_{n+1}, \) потом рекуррентно пересчитываем \( x_i \)\\
+Вычисление \(\xi_i,\eta_i\) — \textbf{прямой ход} прогонки\\
+Вычисление \(x_i\) — \textbf{обратный ход} прогонки
+
+А что с обращением знаменателей в ноль?
+
+\underline{Th:} Если система обладает диагональным преобладанием, то метод прогонки реализуем
+
+\subsubsection{Итерационные методы}
+\underline{Основная схема:}
+
+\begin{enumerate}
+    \item приведение \(Ax=b\) к эквивалентной \(x=Cx+d\)
+    \item итерации \(x^{(k+1)}=Cx^{(k)}+d\)
+\end{enumerate}
+
+дальше детали:\\
+\underline{Th:} Указанная схема итераций сходится из любого начального приближения \(x^{(0)} \iff \iff \rho (C) < 1\\ \rho (C) \text{ - спектральный радиус матрицы \(C\) (максимальное собственное число по модулю)}\)
+
+\vspace{5mm}
+\underline{Приведение к итерационному виду:}\\
+\(Ax=b \Rightarrow x+Ax=x+b \Rightarrow x=(E-A)x+b\)\\
+\(\rho (E-A) -?\)\\
+\(\letus \lambda \text{ — собственное число } A \Rightarrow 1 - \lambda \text{ — собственное число } E-A \Rightarrow \text{ если } \lambda < 0\text{, то }\\ 1-\lambda < 1\)\\
+\(\letus |\lambda| > 2 \text{, то } |1-\lambda| > 1\)
+\[ \Rightarrow \text{ редко когда можно так преобразовать}\]
+\(\letus \Lambda \text{ — матрица-предобуславливатель } (\Lambda A)x=\Lambda b\)\\
+\(E-A \rightarrow E- \Lambda A \text{ хороший спектр}\)
+
+\vspace{5mm}
+Как выбрать \Lambda ?
+
+\begin{itemize}
+    \item \(\Lambda =A^{-1}\) - очень хороший предобуславливатель, но построить его по сложности ~ как решить систему
+    \item нет общих рекомендаций
+    \item метод расщепления матриц
+\end{itemize}
+
+\underline{Метод Ричардсона}
+
+\[x^{(k+1)}=x^{(k)}-\tau_k(Ax^{(k)}-b) \text{ выбор }\tau_k\text{ неочевиден и меняется в итерациях...}\]
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (2.25,0.5) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (0.5,0) {%
+    \begin{minipage}{10cm}
+    к-т поправки
+    \end{minipage}
+  };
+}
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (3.8,1) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (3.7,0.5) {%
+    \begin{minipage}{10cm}
+    поправка
+    \end{minipage}
+  };
+}
+
+\underline{Метод Якоби}
+
+в неособенной матрице в каждой строке и столбце есть ненулевые элементы \(\Rightarrow\) переставим так, чтобы \(a_{ii} \neq 0\) 
+
+\[\sum_{j=1}^n a_{ij} x_j=b_j \Rightarrow x_i=\frac{1}{a_{ii}}(b_i-\sum_{j \neq i} a_{ij}x_j) \text{ - для квадратных матриц}\]
+\[\text{метод } x_i^{(k+1)}=\frac{1}{a_{ii}}(b_i-\sum_{j \neq i} a_{ij}x_j^{(k)}) \text{ и покомпонентные итерации...}\]
+\underline{Th:} если в системе \(Ax=b\) квадратная матрица имеет диагональное преобладание, то метод Якоби сходится при любом начальном приближении
+
+\underline{Модификация} \[x_i^{(k+1)}=\frac{1}{a_{ii}}(b_i-\sum_{j=1}^{i-1} a_{ij}x_j^{(k+1)}-\sum_{j=i+1}^n a_{ij} x_j^{(k)}) \rightarrow \text{метод Гаусса-Зейделя}\]
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (4,0.2) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (2,-0.5) {%
+    \begin{minipage}{10cm}
+    уже пересчитанные\\значения
+    \end{minipage}
+  };
+}
+
+\tikz[remember picture, overlay]{
+  \node[anchor=west] at (7,0.7) {%
+    \begin{minipage}{10cm}
+    \downarrow
+    \end{minipage}
+  };
+  \node[anchor=west] at (6.5,0) {%
+    \begin{minipage}{10cm}
+    пока старые\\значения
+    \end{minipage}
+  };
+}
+
+\vspace{5mm}
+\underline{Th:} метод Гаусса-Зейделя сходится при любом начальном приближении, если
+\begin{itemize}
+    \item матрица имеет диагональное преобладание
+    \vspace{5mm}\\
+    или
+    \vspace{1mm}
+    \item матрица симметрична и положительно определена
+\end{itemize}

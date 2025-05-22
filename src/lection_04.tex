@@ -1,1 +1,205 @@
 \section{Лекция 4 24.03.25}
+
+\subsection{B-сплайны}
+
+\begin{equation}
+    B_{j,0} = \begin{cases}  
+        1, & x_j \leq x \leq x_{j+1} \\
+        0, & \text{иначе}
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    B_{j,d}(t) = \frac{t - x_j}{x_{j+d} - x_j} \cdot B_{j, d-1}(t) + 
+    \frac{x_{j+d+1} - t}{x_{j+d+1} - x_{j+1}} \cdot B_{j+1, d-1}(t)
+\end{equation}
+
+\begin{equation}
+    B_{j,1}(t) = \frac{t - x_j}{x_{j+1} - x_j} \cdot B_{j, 0}(t) +
+        \frac{x_{j+2} - t}{x_{j+2} - x_{j+1}} \cdot B_{j+1, 0}(t) = \begin{cases}
+        \frac{t - x_j}{x_{j+1} - x_j}, & x_j \leq t \leq x_{j+1}\\
+        \frac{x_{j+2} - t}{x_{j+2} - x_{j+1}}, & x_{j+1} \leq t \leq x_{j+2}\\
+        0, & \text{иначе}
+    \end{cases}
+\end{equation}
+
+\begin{equation}
+    B_{j,2}(t) = \begin{cases}
+        \frac{(t - x_j)^2}{(x_{j+1} - x_j) \cdot (x_{j+2} - x_j)}, & t \in [x_j; x_{j+1}]\\
+        \text{более сложный квадратичный многочлен}, & t \in [x_{j+1}; x_{j+2}]\\
+        \frac{(t - x_{j+3})^2}{(x_{j+3} - x_{j+1}) \cdot (x_{j+3} - x_{j+2})}, & t \in [x_{j+2}; x_{j+3}]
+    \end{cases}
+\end{equation}
+
+При приближении к краям начинаются проблемы. Способы решения: 1) не будем строить сплайны, тогда потеряем качество аппроксимации на краях; 2) дополнить сетку фиктивными узлами (по два слева и справа).
+
+\textbf{Утв.}
+\begin{enumerate}
+    \item $B_{j,d}(t)$ зависит только от узлов $ x_j, x_{j+1}, ..., x_{j+d+1} $.
+    \item $ B_{j,d}(t) = 0 $ при $ x \in [x_j; x_{j+1}] $.
+    \item $ \forall x \in (x_j; x_{j+1}) B_{j,d}(t) > 0 $.
+    \item $ B_{j,d}(t) \in C^{d-1}[a; b] $.
+    \item $ \sum_{i=-2}^{n-1} B_{i,d}(t) = 1 $.
+\end{enumerate}
+
+\textbf{Как строить приближение?}
+
+$ \tilde{f}(x) = \sum_{j=-2}^{n-1} c_j B_{j,2}(t) $.
+При $ t \in [x_j; x_{j+1})\ \tilde{f}(x) = \sum_{k=j-2}^{j} c_j B_{k,2}(t) $.
+
+Как выбрать $c_j$? Целая теория...
+
+$ x^*_j = \frac{x_{j+1} + x_{j+1} + ... + x_{j+d}}{d} $ - точки Гревилля.
+
+$ \tilde{f}(x) = \sum_{j \in \mathbb{Z}} f(x^*_j) B_{j,d}(t) $ $\to$ \textbf{variation dimishing approximation}.
+
+\subsubsection{Свойства аппроксимации}
+
+\begin{enumerate}
+    \item 
+        $\forall x \in \mathbb{R}\ \ f_{min} \leq \tilde{f}(x) \leq f_{max}$
+        \begin{equation}
+            \tilde{f}(x) = \sum_i c_i B_{i,d}(x) \leq \sum_i c_{max} B_{i,d}(x) \leq c_{max} \sum_i B_{i,d}(x) = c_{max}
+        \end{equation}
+        \begin{equation}
+            \tilde{f}(x) \geq c_{min}
+        \end{equation}
+        \begin{equation}
+            f_{min} \leq f(x_{j_{min}}) \leq \sum_i f(x^*_j) B_{i,d}(x) \leq f(x_{j_{max}}) \leq f_{max}
+        \end{equation}
+    \item
+        Если $f$ монотонна, то $\tilde{f}$ сохраняет монотонность.
+        
+        \textbf{Лемма.} 
+        $ g = \sum_{i} c_i B_i(x) $, $ c_i \leq c_{i+1} $ $\Rightarrow$ $g$ не убывает.
+
+        \begin{equation}
+            g'(x) = \sum_{i} \frac{c_i - c{i-1}}{x_{i+d} - x_{i}} \geq 0 \Rightarrow g'(x) \geq 0
+        \end{equation}
+        \begin{equation}
+            x^*_j \leq x^*_{j+1} \Rightarrow^{f \text{-мон}} f(x^*_j) \leq f(x^*_{j+1}) \Rightarrow \tilde{f} \text{ - не убывает}
+        \end{equation}
+    \item
+        Если $f$ выпукла(вогнута), то $\tilde{f}$ сохраняет гладкость.
+\end{enumerate}
+
+$\Rightarrow$ построена формосохраняющая аппроксимация. Как расширить теорию? 
+\begin{itemize}
+    \item сохранить гладкость склейки
+    \item сохранить локальность носителя
+    \item не полиномы на отрезках
+\end{itemize}
+
+GB-сплайны, NUAT B-сплайны, минимальные сплайны.
+
+\subsection{Численное дифференцирование}
+
+\subsubsection{Метод неопределенных коэффициентов}
+
+\begin{equation}
+    f^{(k)}(x) = \sum_{i=0}^{p} c_i f(x_i)
+\end{equation}
+
+Потребуем точности на наборе функций:
+
+$ f(x) = 1 \Rightarrow f^{(k)}(x) = 0 $
+
+$ f(x) = x \Rightarrow f^{(k)}(x) = 0 $
+
+$ f(x) = x^{k-1} \Rightarrow f^{(k)}(x) = 0 $
+
+$ f(x) = x^k \Rightarrow f^{(k)}(x) = k! $
+
+$ f(x) = x^p \Rightarrow f^{(k)}(x) = p (p - 1) ... (p - k + 1) x^{p - k} $
+
+\begin{equation}
+    \begin{cases}
+        c_0 + c_1 + ... + c_p = 0\\
+        c_0 x_0 + c_1 x_1 + ... + c_p x_p = 0\\
+        c_0 x_0^{k-1} + c_1 x_1^{k-1} + ... + c_p x_p^{k-1} = 0\\
+        c_0 x_0^k + c_1 x_1^k + ... + c_p x_p^k = k!\\
+        c_0 x_0^p + c_1 x_1^p + ... + c_p x_p^p = p (p - 1) ... (p - k + 1) x^{p - k}
+    \end{cases}
+\end{equation}
+
+Матрица системы - транспонированная матрица Вандермонда.
+
+\subsubsection{Альтернативный метод}
+
+$ f'(x_i) \leadsto P'_i(x_i) $.
+Дано: $ f(x_i) := f_i $, $ f(x_{i-1}) := f_{i-1} $.
+
+\begin{equation}
+    P_i(x) = \frac{x - x_i}{x_{i-1} - x_i} f_{i-1} + \frac{x - x_{i-1}}{x_i - x_{i-1}} f_i
+\end{equation}
+
+\begin{equation}
+    P_i(x) = \frac{f_i - f_{i-1}}{x_i - x_{i-1}} x + \frac{f_{i-1} x_i - f_i x_{i-1}}{x_i - x_{i-1}}
+\end{equation}
+
+\begin{equation}
+    P_i'(x) = \frac{f_i - f_{i-1}}{x_i - x_{i-1}} = \frac{f_i - f_{i-1}}{h}
+\end{equation}
+
+$ \Rightarrow f'(x_i) \approx \frac{f_i - f_{i-1}}{h} $, 
+$ \Rightarrow f'(x_i) \approx \frac{f_{i+1} - f_i}{h} $ $\Rightarrow$ 
+$ f'(x_i) \approx \frac{f_{i+1} - f_{i-1}}{2h} $.
+
+\begin{equation}
+    P_i(x) = \frac{(x - x_i)(x - x_{i+1})}{(x_{i-1} - x_i)(x_{i-1} - x_{i+1})} f_{i-1} + 
+        \frac{(x - x_{i-1})(x - x_{i+1})}{(x_i - x_{i-1})(x_i - x_{i+1})} f_i + 
+        \frac{(x - x_{i-1})(x - x_i)}{(x_{i+1} - x_{i-1})(x_{i+1} - x_{i-1})} f_{i+1}
+\end{equation}
+
+\begin{equation}
+    P_i'(x) = \frac{2x - x_i - x_{i+1}}{h_i(h_i + h_{i+1})} f_{i-1} -
+        \frac{2x - x_{i-1} - x_{i+1}}{h_i h_{i+1}} f_i + 
+        \frac{2x - x_{i+1} - x_i}{h_{i+1}(h_i + h_{i+1})} f_{i+1}
+\end{equation}
+
+Пусть $ h_i = h = const $. 
+
+$ x = x_i $ : $ f'(x_i) = \frac{f_{i+1} - f_{i-1}}{2h} $ - центральная разностная производная.
+
+$ x = x_{i-1} $ - сдвиг .. : $ f'(x_i) = \frac{- 3 f_i + 4 f_{i+1} - f_{i+2}}{2h} $ - правая разностная производная.
+
+$ x = x_{i+1} : f'(x_i) = \frac{f_{i-2} - 4 f_{i-1} + 3 f_i}{2h} $ - левая разностная производная.
+
+\begin{equation}
+    P_i''(x) = \frac{2}{h_i(h_i + h_{i+1})} f_{i-1} -
+        \frac{2}{h_i h_{i+1}} f_i + 
+        \frac{2}{h_{i+1}(h_i + h_{i+1})} f_{i+1}
+\end{equation}
+
+$ f''(x_i) \approx \frac{f_{i-1} - 2 f_i + f_{i+1}}{h^2} $
+
+\subsubsection{Насколько хорошо это работает?}
+
+\textbf{Опр.}
+Численный метод имеет порядок точности $p$, если на равномерной сетке с шагом $h$ погрешность есть $O(h^p)$.
+
+Оценим погрешность $ f'(x_i) \approx \frac{f_{i+1} - f_{i-1}}{2h} $.
+
+Пусть $ f \in C^3[x_{i-1}; x_{i+1}] $. $ \tilde{f}' = \frac{1}{2h} (
+    (f(x_i) + h f'(x_i) + \frac{h^2}{2} f''(x_i) + \frac{h^3}{6} f'''(\xi_1)) - 
+    (f(x_i) - h f'(x_i) + \frac{h^2}{2} f''(x_i) - \frac{h^3}{6} f'''(\xi_2)) 
+) = f'(x_i) + \frac{h^2}{12} (
+    f'''(\xi_1) + f'''(\xi_2)
+); \xi_1, \xi_2 \in (x_{i-1}; x_{i+1}) $ $\Rightarrow$
+$ | \tilde{f}'(x_i) - f'(x_i) | \leq \frac{h^2}{12} | f'''(\xi_1) + f'''(\xi_2) | \leq \frac{M_3}{6} h^2, M_3 = \max_{\xi \in (x_{i-1}; x_{i+1})} | f'''(\xi) | $ 
+$\Rightarrow$ порядок метода равен 2.
+
+Если нет нужной гладкости, возможны нежелательные эффекты.
+
+\textbf{Пример.}
+\begin{equation}
+    g(x) = \begin{cases}
+        x^2, & x \geq 0\\
+        -x^2, & x < 0 
+    \end{cases} = x |x|
+\end{equation}
+
+Гипотеза: $ g'(0) \approx \frac{g(h) + g(-h)}{2h} $ имеет второй порядок сходимости, но $ g''(0) \approx \frac{g(h) + g(-h)}{2h} = \frac{h^2 + h^2}{2h} = h $. $ g''(0) \to_{h \to 0} 0 $ только с первом порядком. Все потому что $ g(x) \in C[a; b] $, но $ g(x) \notin C^2 [a; b] : g'(x) = \begin{cases}
+    -2 |x|, & x \not = 0 \\
+    \lim_{x \to 0} \frac{x |x|}{x} = 0, & x = 0
+\end{cases} $.

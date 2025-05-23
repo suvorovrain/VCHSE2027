@@ -1,7 +1,8 @@
 \usepackage[utf8]{inputenc}
 \usepackage[T2A]{fontenc}
 \usepackage[russian]{babel}
-\usepackage{amsmath, amssymb, amsthm}
+\usepackage{amsmath, amssymb, amsthm, amsfonts}
+\usepackage{relsize}
 \usepackage{enumitem}
 \usepackage[pdfborder={0 0 0}]{hyperref}
 \usepackage{geometry}
@@ -23,3 +24,25 @@
 
 \renewcommand{\thesection}{\arabic{section}}
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
+
+\usepackage{graphicx} %% <- for \rotatebox
+
+\makeatletter %% <- make @ usable in command names
+\newcommand*\Neg[2][0mu]{\Neginternal{#1}{\negslash}{#2}}
+\newcommand*\sNeg[2][0mu]{\Neginternal{#1}{\snegslash}{#2}}
+\newcommand*\ssNeg[2][0mu]{\Neginternal{#1}{\ssnegslash}{#2}}
+\newcommand*\sssNeg[2][0mu]{\Neginternal{#1}{\sssnegslash}{#2}}
+\newcommand*\Neginternal[3]{\mathpalette\Neg@{{#1}{#2}{#3}}}
+\newcommand*\Neg@[2]{\Neg@@{#1}#2}
+\newcommand*\Neg@@[4]{%
+  \mathrel{\ooalign{%
+    $\m@th#1#4$\cr
+    \hidewidth$\m@th#3{#1}\mkern\muexpr#2*2$\hidewidth\cr
+  }}%
+}
+
+\newcommand*\negslash[1]{\m@th#1\not\mathrel{\phantom{=}}}
+\newcommand*\snegslash[1]{\rotatebox[origin=c]{60}{$\m@th#1-$}}
+\newcommand*\ssnegslash[1]{\rotatebox[origin=c]{60}{$\m@th#1{\dabar@}\mkern-7mu{\dabar@}$}}
+\newcommand*\sssnegslash[1]{\rotatebox[origin=c]{60}{$\m@th#1\dabar@$}}
+\makeatother  %% <- revert @

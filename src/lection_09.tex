@@ -1,1 +1,245 @@
 \section{Лекция 9 05.05.25}
+Линейное уравнение Вольтерры II рода:
+\[y(x) -  \int_{a}^{x} K(x,s)y(s) \,ds  = f(x),\space x\in[a,b] \] 
+Нелинейное уравнение Вольтерры II рода:
+\[y(x) -  \int_{a}^{x} K(x,s,y(s)) \,ds  = f(x),\space x\in[a,b] \] 
+\(K(x,s)\) --- ядро интегрального уравнения; уравнение интегральное, т.к. \(y(x)\) стоит под знаком интеграла.\\
+Линейное уравнение Фредгольма II рода: 
+\[y(x) -  \lambda\int_{a}^{b} K(x,s)y(s) \,dx  = f(x),\space x\in[a,b] \] 
+// Уравнение Вольтерры I рода: \( f(t) = \mathlarger{\int}_{a}^{x} K(x,s)y(s)\,ds\)\\// Вольтерры с точки зрения математики --- частный случай Фредгольма.\\\\
+\underline{Откуда возникают эти уравнения}\\
+К сожалению, у нас плохие знания физики; например, уравнение Фредгольма II рода описывает колебательные движения нити, на которую действуют некие силы, а более простое интегральное уравнение --- её прогиб.
+\begin{itemize}
+    \item \textbf{Простой пример:} И.Г.Петровский <<Лекции по теории интегральных уравнений>>
+    \item Очень большой обзор: С.Г. Михлин <<Приложения интегральных уравнений к проблемам механики, матфизики и техники>> (1947г)
+\end{itemize}
+Михлин --- математик, но тогда еще вычмат неразрывно связан с физикой, а сейчас про приложения в книгах по вычам не пишут.
+\subsection{Уравнения Вольтерры}
+Известно, что:
+\begin{enumerate}
+    \item \( f \equiv 0\) (однородное уравнение) --- только тривиальное решение
+    \item Если \(f(x) \in C[a,b]\) и \(K(x,s)\) непр. в $\triangle \, \begin{cases} 
+    x=b\\
+    x=s\\
+    s=a
+    \end{cases} \Rightarrow \exists!$ решение
+\end{enumerate}
+\textbf{!} Вообще говоря, рассматривая все последующие численные методы, мы исходим из предположения $\exists$ и $!$ решения.
+\[y(x) -  \int_{a}^{x} K(x,s)y(s) \,ds  = f(x) \]
+\subsubsection{Метод квадратур}
+Замена интеграла квадратурной суммой: 
+\[\int_{a}^{b} g(x) \,dx = \sum_{i=0}^{n}w_ig(x_i) + R; \, a\le x_0\le x_1 \le ...\le x_n\le b\]
+где $w_i$ --- веса, а $R$ --- ошибка.\\Подставим для \(i=0,1,..,n\) \space \(x=x_i\):
+\[y(x_i) -  \int_{a}^{x_i} K(x_i,s)y(s) \,ds  = f(x_i) \]
+Этот интеграл уже можно заменить квадратурной суммой:
+\[y(x_i)-\sum_{j=0}^{i}w_jK(x_i,x_j)y(x_j)=f(x_i) + R_i\]
+(сумма до $i$, a не до $n$, т.к. интеграл до $x$)\\
+Пусть \( K(x_i,x_j)=K_{ij}, f(x_i)=f_i, y(x_i)=y_i\); и отбросим $R_i$, считая их малыми:
+\[y_i-\sum_{j=0}^{i}w_jK_{ij}y_j=f_i;\, i=0,1,..,n\]
+Перепишем в виде
+\[ \sum_j^{i-1}w_jK_{ij}y_j+(1-w_iK_{ii})y_i=f_i \Rightarrow\]
+\[ \Rightarrow \begin{pmatrix}
+1-w_0K_{00}  \\
+-w_0K_{10}&1-w_1K_{11}& &\mbox{\Huge 0}\\
+\vdots & \vdots & \ddots &\\
+-w_0K_{n0}&-w_1K_{n1}&\cdots&1-w_nK_{nn}\\
+\end{pmatrix} \begin{pmatrix}
+y_0\\
+y_1\\
+\vdots\\
+y_n
+\end{pmatrix} = \begin{pmatrix}
+f_0\\
+f_1\\
+\vdots\\
+f_n
+\end{pmatrix} \]
+Решение: 
+\[y_i=\frac{f_i+\mathlarger{\sum}_{j=0}^{i-1}w_jK_{ij}y_j}{1-w_iK_{ii}}	\rightsquigarrow \textrm{ последовательно находим по этой формуле}\]
+\(1-w_iK_{ii}\ne 0 \iff w_i \ne \frac{1}{K_{ii}}\) --- добиться выбором узлов кв. ф.\\\\
+\underline{Упражнение:} на равномерной сетке с шагом $h$ при использовании метода трапеций формула имеет вид:
+\[y_i=\frac{f_i+\frac{h}{2}K_{i0}{y_0} +h\mathlarger{\sum}_{j=1}^{i-1}K_{ij}y_j}{1-\frac{h}{2}K_{ii}}\]
+Ну а после того, как вычислили $y(x_i)$, можно применить интерполяцию и вычислить в остальных точках.\\\\
+\underline{Замечание:} \begin{itemize}
+    \item численное интегрирование применили
+    \item СЛАУ применили
+    \item интерполяцию применили
+\end{itemize}
+Сами по себе эти задачи не всегда ценны, но как часть целого --- более чем.
+
+\subsubsection{Метод квадратур для нелинейного уравнения}
+\[y(x) -  \int_{a}^{x} K\mathlarger{(}x,s,y(s)\mathlarger{)} \,ds  = f(x),\space x\in[a,b] \] 
+Исходим из предположения $\exists$ и $!$ решения
+\[y(x_i) -  \int_{a}^{x_i} K\mathlarger{(}x,s,y(s)\mathlarger{)} \,ds  = f(x_i)\]
+Заменяем конечными суммами:
+\[y_i - \sum_{j=0}^{i}w_jK_{ij}(y_j) = f_i \]
+\[y_i - w_iK_{ii}(y_i) = f_i + \sum_{j=0}^{i-1}w_jK_{ij}(y_j) \]
+$	\rightsquigarrow$ последовательное решение нелинейных уравнений (а их мы на самой первой паре решали!)
+
+\subsubsection{Метод простой итерации}
+\[y(x) = f(x) +  \int_{a}^{x} K(x,s)y(s) \,ds ,\space x\in[a,b] \] 
+\[y_k(x) = f(x) +  \int_{a}^{x} K(x,s)y_{k-1}(s) \,ds \textrm{ --- схема итераций} \]
+Известно, что \begin{enumerate}
+    \item при \(f(x) \in C[a,b]\) и \( K(x,s) \in C(\triangle \,\,\, a\le s\le x \le b)\) поточечно сходится к единственному решению при любом начальном приближении $y_0(x)$
+    \item часто используют \(y_0(x) = f(x)\)
+    \item скорость сходимости зависит от $K(x,s)$ и $f(x)$
+\end{enumerate}
+\underline{Численно:}\space
+\(y_k(x_i) = f(x_i) +  \mathlarger{\int}_{a}^{x_i} K(x_i,s)y_{k-1}(s) \,ds \) $\rightarrow$ квадратурные суммы (на равномерной сетке)
+\subsection{Линейное уравнение Фредгольма II рода}
+\[y(x) -  \lambda\int_{a}^{b} K(x,s)y(s) \,ds  = f(x),\space x\in[a,b] \] 
+Известно, что если \(\begin{cases}
+    1)f\in C[a,b]\\
+    2)K(x,s)\in C([a,b] \times[a,b])\\
+    3)\textrm{при } f \equiv 0 \textrm{ имеется только тривиальное решение}(\Rightarrow \lambda \textrm{ регулярное}) \\
+\end{cases}\\\Rightarrow \forall f(x)\) у интегрального уравнения Фредгольма II рода $\exists!$ непрерывное решение\\\\
+\underline{Частные случаи:} \begin{enumerate}
+    \item $K(x,s) = K(x-s)$ --- разностное ядро
+    \item \(K(x,s) =\mathlarger{\sum}_{i=1}^{m}\alpha_{i}(x)\beta_{i}(s)\)--- вырожденное ядро ($\{\alpha_i\}, \{\beta_{i}\}$ --- ЛНЗ семейства)
+\end{enumerate}
+В таких случаях есть особые методы решения.
+\subsubsection{Метод решения уравнения с вырожденным ядром}
+\[y(x) -  \lambda\int_{a}^{b} \mathlarger{[}\sum_{i=1}^{m}\alpha_{i}(x)\beta_{i}(s)\mathlarger{]}y(s) \,ds  = f(x),\space x\in[a,b] \] 
+Вытащим то, что не зависит от $s$ за знак интеграла:
+\begin{align}
+y(x) -  \lambda\sum_{i=1}^{m}\alpha_{i}(x)\int_{a}^{b} \beta_{i}(s)y(s) \,ds  = f(x) \tag{$\star$} \label{eq:star}
+\end{align}
+Пусть \(c_i=\mathlarger{\int}_a^b \beta_i(s)y(s)\,ds\) --- мы как-то научились их вычислять, тогда\\ \(y(x)=f(x) +\lambda \mathlarger{\sum}_{i=1}^mc_i\alpha_i(x),\space x\in[a,b]\). \underline{Никакой интерполяции.}\\
+Подставим $y(x)$ в уравнение \eqref{eq:star}:
+\[\sum_{i=1}^m\alpha_i(x)\mathlarger{\{} c_i-\int_a^b \beta_i(s)\mathlarger{[} f(s) + \lambda \sum_{j=1}^m c_j\alpha_j(s)\mathlarger{]}\,ds \mathlarger{\}} =0\]
+т.к. $\{\alpha_i(x)\}_{i=1}^m$ --- ЛНЗ, все коэффициенты равны 0:
+\[c_i-\int_a^b\beta_i(s)\mathlarger{[}f(s)+\lambda\sum_{j=1}^mc_j\alpha_j(s)\mathlarger{]}\, ds=0;\, i=1,..,m \]
+\[c_i-\lambda\sum_{j=1}^m c_j\int_a^b \alpha_j(s)\beta_i(s)\,ds=\int_a^b\beta_i(s)f(s)\,ds\]
+\[ a_{ij}=\int_a^b\alpha_j(s)\beta_i(s)\,ds;\, f_i=\int_a^b\beta_i(s)f(s)\,ds\]
+\[c_i-\lambda\sum_{j=1}^ma_{ij}c_j=f_i\]
+\[
+\begin{pmatrix}
+    1-\lambda a_{11} & -\lambda a_{12} & \cdots & -\lambda a_{1n}\\
+    -\lambda a_{21} & 1-\lambda a_{22} & \cdots & -\lambda a_{2n}\\
+    \cdots & \cdots & \cdots & \cdots\\
+    -\lambda a_{m1} & -\lambda a_{m2} & \cdots & 1-\lambda a_{mm}
+\end{pmatrix}
+\begin{pmatrix}
+    c_1\\c_2\\ \vdots \\ c_n
+\end{pmatrix}
+=
+\begin{pmatrix}
+    f_1\\ f_2 \\ \vdots \\f_n
+\end{pmatrix}
+\]
+Известно, что если $\lambda$ --- регулярное, то система разрешима.\\
+\underline{Итог:} \begin{itemize}
+    \item вычисляем интегралы $a_{ij}$
+    \item решаем СЛАУ
+    \item получаем ответ \(y(x)=f(x)+\lambda \mathlarger{\sum}_{i=1}^m c_i\alpha_i(x)\)
+\end{itemize}
+\underline{Замечание:}\\
+Если ядро невырожденное, но достаточно гладкое, его можно приблизить вырожденным.\\
+\underline{Пример:}
+\[y(x)+\int_0^1x(e^{xs}-1)y(s)\,ds=e^x-x\]
+Известно, что есть решение y(x) \equiv 1.\\
+\(K(x,s)=x(e^{xs}-1)\) --- невырожденное ядро. Но, разложив $e^{xs}$ в ряд Тейлора, получим вырожденное ядро.
+\subsubsection{Метод сплайн-коллокаций}
+Изучить самостоятельно дома и сделать задачку.
+\subsection{Уравнение Фредгольма I рода}
+А теперь рассмотрим уравнение Фредгольма I рода в условиях $\exists!$ решения:
+\[ \int_a^bK(x,s)z(s)\,ds=u(x),\, \begin{cases}
+    c\le x\le d\\
+    z(s)\in C[a,b]\\
+    u(x)\in L_2[c,d)\\
+    \frac{\partial K}{\partial x}\in C \left ( \left \{ 
+        \begin{align*}
+  a\le x\le b \\ 
+  c \le x \le d
+\end{align*}
+    \right \} \right ) 
+\end{cases}\]
+Попробуем применить предложенные методы (квадратур, сплайн-коллокаций) и ничего не выйдет...
+\begin{itemize}
+    \item почему?
+    \item что делать?
+\end{itemize}\\
+\underline{Похожие примеры:}\\\\
+\textcircled{\small{1}}\\
+\[ \begin{cases}
+        z_1+7z_2=5\\
+        \sqrt{2}z_1+\sqrt{98}z_2 = \sqrt{50}
+    \end{cases} \rightarrow\ \begin{cases}
+        z_1 = 0,1\\
+        z_2 = 0,7
+    \end{cases} \]
+Оставив два знака после запятой у коэффициентов при $z_1$ и $z_2$, получим:
+\[ \begin{cases}
+        z_1+7z_2=5\\
+        1,41z_1+9,9z_2 = \sqrt{50}
+    \end{cases} \rightarrow\ \begin{cases}
+        z_1 = \frac{1}{3}\\
+        z_2 = \frac{2}{3}
+    \end{cases} \]
+\[ \textrm{50 знаков:}\begin{cases}
+        z_1 = 9,666..\\
+        z_2 = 0.666..
+    \end{cases} 
+    \space
+    \textrm{200 знаков:}\begin{cases}
+        z_1 = -5,5\\
+        z_2 = 1,5
+    \end{cases} \]
+Процесс никуда не сходится; малые возмущения исходных значений приводят к сильным возмущениям системы.\\
+\textcircled{\small{2}} (c ним столкнулся Адамар)
+\[\begin{cases}
+    \frac{\partial^2u}{\partial x^2} + \frac{\partial^2u}{\partial y^2}=0\\
+    u(x,0)=f(x)\\
+    $\left.{\frac{\partial u}{\partial y}}\right|_{y=0}$ = \phi(x)\\
+\end{cases}, \textrm{где } u, f, \phi \textrm{ непрерывны на своих областях определения}\]\\
+$	\rightsquigarrow$ задача Коши для уравнения Лапласа\\\\
+\(1^o) \begin{cases}
+    f_1(x) \equiv 0\\
+    \phi_1(x)\ = \frac{1}{a}sin(ax)
+\end{cases} \Rightarrow u_1(x,y)=\frac{1}{a^2}sin(ax)sh(ay)\)\\
+\(2^o) \begin{cases}
+    f_2(x) \equiv 0\\
+    \phi_2(x) \equiv0
+\end{cases} \Rightarrow u_2(x,y)\equiv0\)
+\[\rho_C(f_1,f_2)=\sup_{x}|f_1(x)-f_2(x)|=0\]
+\[\rho_C(\phi_1,\phi_2)=\sup_{x}|\phi_1(x)-\phi_2(x)|=\frac{1}{a} \xrightarrow{a\rightarrow\infty}{0}\]
+\[\rho_C(u_1,u_2)=\sup_{x,y}\left |\frac{1}{a^2}sin(ax)sh(ay)\right |= \sup_y\frac{1}{a^2}sh(ay)\xrightarrow{a\rightarrow\infty}{+\infty}\]
+Снова малые возмущения данных краевой задачи сильно исказили решение.\\
+Кажется, что мы готовы только к тем задачам, где нет <<искажений>>.\\\\
+\underline{Определение:}\\
+\(Az=u, \textrm{ где } z\in Z,\space u\in U,\space  A:Z\rightarrow U \) --- непрерывный оператор,\\
+задача корректно поставлена (по Адамару), если \begin{enumerate}
+    \item уравнение разрешимо $\forall u\in U$
+    \item решение единственно
+    \item решение устойчиво к возмущениям, т.е. малым возмущениям u в метрике U соответствуют малые возмущения z в метрике Z
+\end{enumerate}\\
+\underline{Что у уравнений Фредгольма I рода?}\\
+Пусть при  \(u=u_0(x)\) имеем решение \( z=z_0(x)\) и пусть \(u_{N,w}(x)=u_0(x)+N\mathlarger{\int}_a^bK(x,s)sin\,ws\,ds\).
+Рассмотрим \(z_{N,w}(s)=z_0(s)+Nsin\,ws\,\):
+\[\rho_U(u_{N,w}, u_0)=|N| \left (\mathlarger{\int}_c^d \left [ \int_a^b K(x,s)sin\,ws\,ds \right ]^2\,dx \right )^\frac{1}{2} \xrightarrow{w\rightarrow \infty}{0}\]
+\[\int_a^b K(x,s)sin\,ws\,ds \xrightarrow{w\rightarrow \infty}{0} \textrm{ (теория рядов Фурье)}\]
+\[\rho_Z(z_{N,w},z_0) = \max_{S\in[a,b]} |Nsin\,ws|=N \sNeg[1mu]{\xrightarrow{w\rightarrow\infty}}0  \]
+\(\Rightarrow\) задача поставлена некорректно (хотя бы потому, что проблемы с устойчивостью).\\\\
+Некорректно поставленные задачи делятся на \begin{enumerate}
+    \item регулярные (по Тихонову)
+    \item нерегулярные
+\end{enumerate}\\
+\underline{Идея регуляризации}\\
+Решить операторное уравнение \(Az=u\rightsquigarrow ||Au-z||_2^2+\alpha||u||_2\rightarrow \min\)\\
+(минимизация первого слагаемого $\rightarrow$ минимизация невязки, неустойчивость;\\ минимизация второго слагаемого $\rightarrow$ повышение устойчивости, увеличение невязки;\\$\alpha$ --- коэффициент регуляризации (используется для балансировки))\\
+$\rightsquigarrow$ решить новое операторное уравнение \((A^TA+\alpha L)z_{\alpha}=A^Tu\),
+где $L$ --- симметричный и положительно определенный оператор.\\
+Оказывается, что тут будет устойчивость.\\
+Выбор $\alpha$: тоже целая теория.\\
+А.Н. Тихонов, А.С.Леонов, А.Г. Ягола <<Нелинейные некорректные задачи>> (1995г.)\\\\
+A.M. Wazwaz "The regularisation method for Fredholm Integral Equation of the I kind"  (2011г.):\\
+ур-е I рода \(\mathlarger{\int}_a^bK(x,t)u(t)\,dt \rightarrow \alpha u_{\alpha}(x)+\mathlarger{\int}_a^bK(x,t)u_{\alpha}(t)\,dt = f(x)\) --- ур-е II рода, и решать стандартными методами.
+\begin{itemize}
+    \item ничего не доказал
+    \item привел числ. примеры
+    \item похоже, работает
+    \item я использовал
+    \item Бурова ставит под сомнения
+\end{itemize}\\
+Бывают интегральные уравнения Абеля, Урысона, бывают интегро-дифференциальные уравнения. Мы скипаем.\\
+А.В. Лебедева, В.М. Рябов <<О регулязации решения интегральных уравнений первого рода с помощью квадратурных формул>>

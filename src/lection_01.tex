@@ -153,3 +153,37 @@ $F(x)=0; F \in C[a; b]; F(a)F(b) < 0 \implies \exists x^* \in [a; b]: F(x^*)=0$ 
 \end{center}
 
 \subsubsection{Пример 1}
+\[x^2=a\]
+\[F(x) = x^2 - a\]
+\[F'(x) = 2x\]
+\[x_{n+1} = x_n - \frac{x^2_n - a}{2x_n} = \frac{1}{2}(x_n+\frac{a}{x_n})\] --- метод Герона нахождения квадратных корней.
+
+\subsubsection{Пример 2}
+\[\sqrt[3]{x}e^{-x} = 0\]
+Единственное решение \[x^* = 0\] 
+\[F(x) = x^{\frac{1}{3}} e^{-x}; F'(x) = \frac{1}{3}x^{-\frac{2}{3}}e^{-x} - x^{\frac{1}{3}}e^{-x}\] 
+$\forall x_0$ метод Ньютона не сходится к решению.
+
+Функции, на которых плохо работает метод Ньютона, обсуждаются в статье <<Pathological functions for Newton's method>> (1993).
+
+\subsection{Метод простой итерации}
+Приведём уравнение к виду $x = f(x)$.
+\paragraph{Метод:} \begin{enumerate}
+    \item Выберем случайное $x_0$ --- начальное приближение
+    \item $x_{n+1} = f(x_n)$
+\end{enumerate}
+\paragraph{Дополнительные ограничения:} \begin{itemize}
+    \item Пусть $\delta$ --- фиксированное число. $\Omega\delta = \{x_0: \vert x - x_0 \vert < \delta \}$. Тогда $f$ должна быть определена в $\Omega \delta$.
+    \item $\forall x', x'' \in \Omega\delta: \vert f(x'') - f(x') \vert < L\vert x'' - x' \vert, L < 1$ --- условие Липшица
+\end{itemize}
+Проведём оценку сходимости метода.
+Пусть $m = \vert f(x_0) - x_0 \vert$.
+\[
+\vert x_1 - x_0\vert = m \implies (m < \delta \implies x_1 \in \Omega\delta)
+\]
+\[
+\vert x_2 - x_1\vert = \vert f(x_1) - f(x_0) \vert < L \vert x_1 - x_0 \vert < Lm
+\]
+\[
+\vert x_2 - x_0\vert \leq \vert x_2 - x_1 \vert + \vert x_1 - x_0 \vert < Lm + m = (L + 1)m \implies (m(L+1) < \delta \implies x_2 \in \Omega\delta)
+\]

@@ -74,4 +74,80 @@ z &= \rho \sin(\psi)
 \]
 \paragraph{Определение (вращение векторного поля по границе):} Величина $\gamma(\varphi, \partial D)$ называется \textbf{вращением векторного поля $\varphi$ по границе $\partial D$}.
 \paragraph{Упражнение:} Почему это называется вращением? Подсказка: рассмотрите двумерный случай, простое векторное поле $\varphi(\mathbf{x}) = \mathbf{x}$ и множество $D$ с границей, являющейся окружностью. Показать, что в двумерном случае это количество оборотов вектора поля при движении точки аргумента в положительном направлении по области границы.
-\paragraph{Утверджение:} $\mathbf{x^*}$ --- изолированная особая точка, $S_1, S_2$ --- малые сферы вокруг $\mathbf{x^*}$. Тогда верно $\gamma(\mathbf{x^*}, \partial S_1) = \gamma(\mathbf{x^*}, \partial S_2) \implies ind(\mathbf{x^*}) := \gamma(\mathbf{x^*}, \partial S_i) \ \forall i.$
+\paragraph{Утверджение:} $\mathbf{x^*}$ --- изолированная особая точка, $S_1, S_2$ --- малые сферы вокруг $\mathbf{x^*}$. Тогда верно $\gamma(\mathbf{x^*}, \partial S_1) = \gamma(\mathbf{x^*}, \partial S_2) \implies ind(\mathbf{x^*}) := \gamma(\mathbf{x^*}, \partial S_i) \ \forall i$ --- \textbf{индекс особой точки}.
+\paragraph{Теорема:} Изолированная особая точка устойчива $\iff$ $ind(\mathbf{x}) \neq 0$.
+\paragraph{Упражнение:} Показать, что особая точка решения квадратного уравнения $x^2+px+q=0$ при $p^2=4q$ не обладает устойчивостью.
+\subsection{Метод Чебышёва}
+\subsubsection{Постановка задачи}
+Решить $F(\mathbf{x}) = 0 \implies$ найти $\mathbf{x^*}: \|F(\mathbf{x^*})\|<\varepsilon, ind(\mathbf{x^*}) \neq 0$.
+Если интересуют все решения, то нужно найти множество $\varepsilon$-решений и границы интервалов ненулевого индекса.
+Когда ищем так, о перечисленных проблемах 1.2.1 - 1.2.3 думать не нужно.
+\subsubsection{Условия метода}
+$F(x)=0; F \in C[a; b]; F(a)F(b) < 0 \implies \exists x^* \in [a; b]: F(x^*)=0$ (по т. Больцано-Коши).
+
+Дополнительные ограничения:
+\begin{enumerate}
+    \item $\forall x \in [a; b]\ \left| F'(x) \right| \ge \delta > 0 \implies \exists \varphi = F^{-1}$ и $\varphi$ имеет столько же непрерывных производных, сколько и $F$. (т. об обратном отображении)
+    \item $F$ имеет $(m+1)$ непрерывных производных, $m = const$ (сильное требование!)
+\end{enumerate}
+\subsubsection{Процедура метода}
+\[
+x^* \text{ --- решение } \implies F(x^*) = 0 \implies x^* = \varphi(0).
+\]
+
+Пусть $x_0$ --- произвольная фиксированная точка. $y_0 = F(x_0)$, $\hat{y}$ --- между $y$ и $y_0$.
+
+По формуле Тейлора
+\[
+\varphi(y) = \sum\limits_{k = 0}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k} (y-y_0)^k + \frac{1}{(m+1)!}\frac{\partial^{m+1}\varphi(\hat{y})}{\partial y^{m+1}}(y-y_0)^{m+1}.
+\]
+
+Пусть $y=0$. Тогда
+\[
+x^* = \varphi(y_0) + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k}(-y_0)^k + r_{m+1}(y_0).
+\]
+
+\[
+x^* = x_0 + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k}(-y_0)^k + r_{m+1}(y_0).
+\]
+
+Пусть $x_1 = x^* - r_{m+1}(y_0)$.
+
+Пусть $y_1 = F(x_1)$.
+
+Применим снова формулу Тейлора в окрестности $y_1$.
+\[
+x^* = x_1 + \sum\limits_{k=1}^m \frac{1}{k!}\frac{\partial^k\varphi(F(x_1))}{\partial y^k}((-F(x_1))^k) + r_{m+1}(y_1).
+\]
+
+Пусть $x_2 = x^* - r_{m+1}(y_1)$.
+
+Пусть $y_2 = F(x_2)$.
+
+Понятно, что $\vert x^* - x_{n}\vert \leq \vert r_{m+1}(y_1) \vert$.
+
+
+Надежда (увы, это не всегда так):
+\begin{enumerate}
+    \item $x_n \in [a; b]$
+    \item $x_n \underset{n \to \infty}{\longrightarrow} x^*$
+\end{enumerate}
+
+Как считать $\frac{\partial^k \varphi(F(x_i))}{\partial y^k}$?
+\begin{enumerate}
+    \item $y=F(x)$. $\varphi(F(x)) = x$. $\varphi'_y (F(x))F'(x) = 1 \implies \frac{\partial \varphi (F(x))}{\partial y} = \frac{1}{F'(x)}$, $F'(x)$ отдалена от нуля
+    \item $\frac{d}{dx}[\varphi'_y (F(x))F'(x)] = 0$. $\varphi'_y (F(x))(F'(x))^2 + \varphi'_y (F(x))F''(x) = 0 \implies \frac {\partial^2 \varphi(F(x))}{\partial^2 y}$ можно выразить: $\varphi''_y (F(x)) = - \frac {\varphi'_y(F(x))F''(x)}{(F'(x))^2}$
+\end{enumerate}
+
+
+На сходимость сложно сформулировать какие-то внятные условия в общем виде.
+
+\subsubsection {Метод Ньютона}
+При $m=1$ мы имеем дело с ранее рассмотренным методом Ньютона. 
+\[
+x_{n+1} = x_n - \frac{F(x_n)}{F'(x_n)}.
+\]
+Метод может не сходиться, но иногда работает.
+\begin{center}
+    \includegraphics[width=8.2cm]{../figures/lection_1/figure_2.png}
+\end{center}

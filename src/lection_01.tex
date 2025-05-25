@@ -9,14 +9,14 @@ x_n
 $
 Дано уравнение:
 \begin{equation}
-F(\mathbf{x}) = 0. 
+	F(\mathbf{x}) = 0. 
 \end{equation}
 Требуется найти вектор $\mathbf{x^*} \in \mathbb{R}^n$ такой, что $F(\mathbf{x^*}) = 0$.
 \subsection{Проблемы в вычислительном контексте}
 \subsubsection{Устойчивость}
 Пусть мы имеем уравнение
 \[
-x^2 + px + q = 0.
+	x^2 + px + q = 0.
 \]
 Известно, что если $p^2 = 4q$,
 то уравнение имеет единственное решение.
@@ -33,7 +33,7 @@ $
 $\varepsilon = 1,6 \cdot 10^{-19}$ Кл. (уравнение электронного заряда).
 \subsubsection{Недостаточность $\varepsilon$-решения}
 \begin{center}
-    \includegraphics[width=5.2cm]{../figures/lection_1/figure_1.png}
+	\includegraphics[width=5.2cm]{../figures/lection_1/figure_1.png}
 \end{center}
 Кирпич, стоящий на подставке --- система в состоянии неустойчивого равновесия. Нас интересует поиск момента фазового перехода (момента, когда кирпич упадёт), точно так же как для плавления, кристаллизации, таяния и других примеров систем. В теории динамических систем это называют точкой бифуркации. Если мы найдём $\varepsilon$-решение, оно не подойдёт, так как нужно, чтобы произошёл <<переход через ноль>>, иначе решение не будет представлять ценности. Может быть найдена не одна точка $x^*$, а интервал.
 \paragraph{Определение (точка перехода через ноль в одномерном случае):} $x^*$ --- \textbf{точка перехода через ноль} для $f\in C(\mathbb{R})$, если $\forall \varepsilon > 0 \  f(x^*-\varepsilon)f(x^*+\varepsilon) < 0$.
@@ -50,27 +50,27 @@ $\varepsilon = 1,6 \cdot 10^{-19}$ Кл. (уравнение электронн�
 Пусть $D \subset \mathbb{R}^n$ --- ограниченное. $\partial D$ --- граница этого множества. $\varphi$ --- невырожденное на $\partial D$ (т.е. нет особых точек).
 Пусть $\mathbf{x}=(x_1,x_2,\hdots,x_n) \in \partial D$. Зададим параметризацию границы.
 \[
-\left\{
-\begin{aligned}
-x_1 &= x_1(u_1, u_2, \dots, u_{n-1}) \\
-x_2 &= x_2(u_1, u_2, \dots, u_{n-1}) \\
-&\hdots \\
-x_n &= x_n(u_1, u_2, \dots, u_{n-1})
-\end{aligned}
-\right.
+	\left\{
+	\begin{aligned}
+		x_1 & = x_1(u_1, u_2, \dots, u_{n-1}) \\
+		x_2 & = x_2(u_1, u_2, \dots, u_{n-1}) \\
+		    & \hdots                          \\
+		x_n & = x_n(u_1, u_2, \dots, u_{n-1}) 
+	\end{aligned}
+	\right.
 \]
 \paragraph{Пример (параметризация границы сферы):} $\left\{
 \begin{aligned}
-x &= \rho \cos(\psi) \cos(\theta) \\
-y &= \rho \cos(\psi) \sin(\theta) \\
-z &= \rho \sin(\psi)
+	x & = \rho \cos(\psi) \cos(\theta) \\
+	y & = \rho \cos(\psi) \sin(\theta) \\
+	z & = \rho \sin(\psi)              
 \end{aligned}
 \right.$
 \\
 
 Пусть $S_n$ --- площадь поверхности единичной сферы в $\mathbb{R}^n$.
 \[
-\gamma(\varphi, \partial D) = \frac{1}{S_n} \int\limits_{\partial D} \frac{1}{\|\varphi(\mathbf{x})\|^n} \begin{vmatrix} \varphi_1(\mathbf{x}) & \frac{\partial \varphi_1(\mathbf{x}}{\partial u_1}  &\hdots & \frac{\partial \varphi_1(\mathbf{x}}{\partial u_{n-1}} \\ \varphi_2(\mathbf{x}) & \frac{\partial \varphi_2(\mathbf{x}}{\partial u_1}  &\hdots & \frac{\partial \varphi_2(\mathbf{x}}{\partial u_{n-1}} \\ \hdots & \hdots & \hdots & \hdots \\ \varphi_n(\mathbf{x}) & \frac{\partial \varphi_n(\mathbf{x}}{\partial u_1}  &\hdots & \frac{\partial \varphi_n(\mathbf{x}}{\partial u_{n-1}} \end{vmatrix} du_1du_2\hdots du_n
+	\gamma(\varphi, \partial D) = \frac{1}{S_n} \int\limits_{\partial D} \frac{1}{\|\varphi(\mathbf{x})\|^n} \begin{vmatrix} \varphi_1(\mathbf{x}) & \frac{\partial \varphi_1(\mathbf{x}}{\partial u_1}  &\hdots & \frac{\partial \varphi_1(\mathbf{x}}{\partial u_{n-1}} \\ \varphi_2(\mathbf{x}) & \frac{\partial \varphi_2(\mathbf{x}}{\partial u_1}  &\hdots & \frac{\partial \varphi_2(\mathbf{x}}{\partial u_{n-1}} \\ \hdots & \hdots & \hdots & \hdots \\ \varphi_n(\mathbf{x}) & \frac{\partial \varphi_n(\mathbf{x}}{\partial u_1}  &\hdots & \frac{\partial \varphi_n(\mathbf{x}}{\partial u_{n-1}} \end{vmatrix} du_1du_2\hdots du_n
 \]
 \paragraph{Определение (вращение векторного поля по границе):} Величина $\gamma(\varphi, \partial D)$ называется \textbf{вращением векторного поля $\varphi$ по границе $\partial D$}.
 \paragraph{Упражнение:} Почему это называется вращением? Подсказка: рассмотрите двумерный случай, простое векторное поле $\varphi(\mathbf{x}) = \mathbf{x}$ и множество $D$ с границей, являющейся окружностью. Показать, что в двумерном случае это количество оборотов вектора поля при движении точки аргумента в положительном направлении по области границы.
@@ -87,28 +87,28 @@ $F(x)=0; F \in C[a; b]; F(a)F(b) < 0 \implies \exists x^* \in [a; b]: F(x^*)=0$ 
 
 Дополнительные ограничения:
 \begin{enumerate}
-    \item $\forall x \in [a; b]\ \left| F'(x) \right| \ge \delta > 0 \implies \exists \varphi = F^{-1}$ и $\varphi$ имеет столько же непрерывных производных, сколько и $F$. (т. об обратном отображении)
-    \item $F$ имеет $(m+1)$ непрерывных производных, $m = const$ (сильное требование!)
+	\item $\forall x \in [a; b]\ \left| F'(x) \right| \ge \delta > 0 \implies \exists \varphi = F^{-1}$ и $\varphi$ имеет столько же непрерывных производных, сколько и $F$. (т. об обратном отображении)
+	\item $F$ имеет $(m+1)$ непрерывных производных, $m = const$ (сильное требование!)
 \end{enumerate}
 \subsubsection{Процедура метода}
 \[
-x^* \text{ --- решение } \implies F(x^*) = 0 \implies x^* = \varphi(0).
+	x^* \text{ --- решение } \implies F(x^*) = 0 \implies x^* = \varphi(0).
 \]
 
 Пусть $x_0$ --- произвольная фиксированная точка. $y_0 = F(x_0)$, $\hat{y}$ --- между $y$ и $y_0$.
 
 По формуле Тейлора
 \[
-\varphi(y) = \sum\limits_{k = 0}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k} (y-y_0)^k + \frac{1}{(m+1)!}\frac{\partial^{m+1}\varphi(\hat{y})}{\partial y^{m+1}}(y-y_0)^{m+1}.
+	\varphi(y) = \sum\limits_{k = 0}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k} (y-y_0)^k + \frac{1}{(m+1)!}\frac{\partial^{m+1}\varphi(\hat{y})}{\partial y^{m+1}}(y-y_0)^{m+1}.
 \]
 
 Пусть $y=0$. Тогда
 \[
-x^* = \varphi(y_0) + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k}(-y_0)^k + r_{m+1}(y_0).
+	x^* = \varphi(y_0) + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k}(-y_0)^k + r_{m+1}(y_0).
 \]
 
 \[
-x^* = x_0 + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k}(-y_0)^k + r_{m+1}(y_0).
+	x^* = x_0 + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\partial y^k}(-y_0)^k + r_{m+1}(y_0).
 \]
 
 Пусть $x_1 = x^* - r_{m+1}(y_0)$.
@@ -117,7 +117,7 @@ x^* = x_0 + \sum\limits_{k = 1}^m \frac{1}{k!} \frac{\partial^k \varphi(y_0)}{\p
 
 Применим снова формулу Тейлора в окрестности $y_1$.
 \[
-x^* = x_1 + \sum\limits_{k=1}^m \frac{1}{k!}\frac{\partial^k\varphi(F(x_1))}{\partial y^k}((-F(x_1))^k) + r_{m+1}(y_1).
+	x^* = x_1 + \sum\limits_{k=1}^m \frac{1}{k!}\frac{\partial^k\varphi(F(x_1))}{\partial y^k}((-F(x_1))^k) + r_{m+1}(y_1).
 \]
 
 Пусть $x_2 = x^* - r_{m+1}(y_1)$.
@@ -129,25 +129,27 @@ x^* = x_1 + \sum\limits_{k=1}^m \frac{1}{k!}\frac{\partial^k\varphi(F(x_1))}{\pa
 
 Надежда (увы, это не всегда так):
 \begin{enumerate}
-    \item $x_n \in [a; b]$
-    \item $x_n \underset{n \to \infty}{\longrightarrow} x^*$
+	\item $x_n \in [a; b]$
+	\item $x_n \underset{n \to \infty}{\longrightarrow} x^*$
 \end{enumerate}
 
 Как считать $\frac{\partial^k \varphi(F(x_i))}{\partial y^k}$?
 \begin{enumerate}
-    \item $y=F(x)$. $\varphi(F(x)) = x$. $\varphi'_y (F(x))F'(x) = 1 \implies \frac{\partial \varphi (F(x))}{\partial y} = \frac{1}{F'(x)}$, $F'(x)$ отдалена от нуля
-    \item $\frac{d}{dx}[\varphi'_y (F(x))F'(x)] = 0$. $\varphi'_y (F(x))(F'(x))^2 + \varphi'_y (F(x))F''(x) = 0 \implies \frac {\partial^2 \varphi(F(x))}{\partial^2 y}$ можно выразить: $\varphi''_y (F(x)) = - \frac {\varphi'_y(F(x))F''(x)}{(F'(x))^2}$
+	\item $y=F(x)$. $\varphi(F(x)) = x$. $\varphi'_y (F(x))F'(x) = 1 \implies \frac{\partial \varphi (F(x))}{\partial y} = \frac{1}{F'(x)}$, $F'(x)$ отдалена от нуля
+	\item $\frac{d}{dx}[\varphi'_y (F(x))F'(x)] = 0$. $\varphi'_y (F(x))(F'(x))^2 + \varphi'_y (F(x))F''(x) = 0 \implies \frac {\partial^2 \varphi(F(x))}{\partial^2 y}$ можно выразить: $\varphi''_y (F(x)) = - \frac {\varphi'_y(F(x))F''(x)}{(F'(x))^2}$
 \end{enumerate}
 
 
 На сходимость сложно сформулировать какие-то внятные условия в общем виде.
 
-\subsubsection {Метод Ньютона}
+\subsubsection{Метод Ньютона}
 При $m=1$ мы имеем дело с ранее рассмотренным методом Ньютона. 
 \[
-x_{n+1} = x_n - \frac{F(x_n)}{F'(x_n)}.
+	x_{n+1} = x_n - \frac{F(x_n)}{F'(x_n)}.
 \]
 Метод может не сходиться, но иногда работает.
 \begin{center}
-    \includegraphics[width=8.2cm]{../figures/lection_1/figure_2.png}
+	\includegraphics[width=8.2cm]{../figures/lection_1/figure_2.png}
 \end{center}
+
+\subsubsection{Пример 1}

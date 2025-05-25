@@ -169,21 +169,47 @@ $\forall x_0$ метод Ньютона не сходится к решению.
 \subsection{Метод простой итерации}
 Приведём уравнение к виду $x = f(x)$.
 \paragraph{Метод:} \begin{enumerate}
-    \item Выберем случайное $x_0$ --- начальное приближение
-    \item $x_{n+1} = f(x_n)$
+\item Выберем случайное $x_0$ --- начальное приближение
+\item $x_{n+1} = f(x_n)$
 \end{enumerate}
 \paragraph{Дополнительные ограничения:} \begin{itemize}
-    \item Пусть $\delta$ --- фиксированное число. $\Omega\delta = \{x_0: \vert x - x_0 \vert < \delta \}$. Тогда $f$ должна быть определена в $\Omega \delta$.
-    \item $\forall x', x'' \in \Omega\delta: \vert f(x'') - f(x') \vert < L\vert x'' - x' \vert, L < 1$ --- условие Липшица
+\item Пусть $\delta$ --- фиксированное число. $\Omega\delta = \{x_0: \vert x - x_0 \vert < \delta \}$. Тогда $f$ должна быть определена в $\Omega \delta$.
+\item $\forall x', x'' \in \Omega\delta: \vert f(x'') - f(x') \vert < L\vert x'' - x' \vert, L < 1$ --- условие Липшица
 \end{itemize}
-Проведём оценку сходимости метода.
+Докажем существование и единственность решения.
 Пусть $m = \vert f(x_0) - x_0 \vert$.
 \[
-\vert x_1 - x_0\vert = m \implies (m < \delta \implies x_1 \in \Omega\delta)
+	\vert x_1 - x_0\vert = m \implies (m < \delta \implies x_1 \in \Omega\delta).
 \]
 \[
-\vert x_2 - x_1\vert = \vert f(x_1) - f(x_0) \vert < L \vert x_1 - x_0 \vert < Lm
+	\vert x_2 - x_1\vert = \vert f(x_1) - f(x_0) \vert < L \vert x_1 - x_0 \vert < Lm.
 \]
 \[
-\vert x_2 - x_0\vert \leq \vert x_2 - x_1 \vert + \vert x_1 - x_0 \vert < Lm + m = (L + 1)m \implies (m(L+1) < \delta \implies x_2 \in \Omega\delta)
+	\vert x_2 - x_0\vert \leq \vert x_2 - x_1 \vert + \vert x_1 - x_0 \vert < Lm + m = (L + 1)m \implies (m(L+1) < \delta \implies x_2 \in \Omega\delta).
 \]
+Проведём нужное количество шагов до получения $x_n$.
+\[
+	\vert x_{n+1} - x_n \vert = L^n m.
+\]
+\[
+	\vert x_{n+1} - x_0\vert = (1+L+\hdots+L^n)m = \frac{1}{1-L}m \implies (\frac{m}{1-L} < \delta \implies x_n \in \Omega \delta).
+\]
+\[
+	\vert x_{n+k}-x_n\vert \leq \vert x_{n+k} - x_{n+k-1}\vert + \vert x_{n+k-1} - x_{n+k-2}\vert + \hdots + \vert x_{n+1} - x_n \vert < L^n m (1+L+\hdots+L^{k-1}) \leq \frac{mL^n}{1-L}
+	\underset{n \to \infty}{\longrightarrow} 0.
+\]
+Последовательность является сходящейся по Коши $\implies \exists \underset{n \to \infty}{x_n} = x^*$.
+$\forall n: x_n \in \Omega\delta \implies x^* \in \Omega\delta$.
+\[
+	f \in C(\mathbb{R}) \implies \underset{n\to\infty}{f(x_n)}=f(x^*)\implies\underset{n\to\infty}{f(x_{n+1})}=f(x^*)\implies f(x^*)=x^*.
+\]
+Существование решения доказано.
+\[
+	\vert x_{n+k} - x_n \vert < \frac{m}{1-L}L^n\implies \vert x_n - x^*\vert < \frac{m}{1-L}L^n = \frac{\vert f(x_0)-x_0\vert}{1-L}L^n.
+\]
+Пусть $x_1^*, x_2^*$ --- решения, $x_1^* \neq x_2^*$.
+\[
+	\vert x_1^* - x_2^* \vert = \vert f(x_1^*) - f(x_2^*)\vert < L\vert x_1^* - x_2^* \vert \implies L > 1 ?!
+\]
+Единственность решения доказана.
+\paragraph{Теорема:} Пусть $f$ определена на $\Omega\delta$ и удовлетворяет условию Липшица с $L > 1$. Если $\frac{m}{1-L} < \delta$, то $\forall n: x_n \in \Omega \delta$ и МПИ сходится к единственной неподвижной точке $x^*$, при этом верна оценка $\vert x_n - x^*\vert < \frac {m}{1-L}L^n$.

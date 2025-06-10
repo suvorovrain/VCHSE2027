@@ -1,5 +1,5 @@
 \section{Лекция 6 21.04.25}
-Проблема собстввенных значений
+Проблема собственных значений
 \\
 \(Av = \lambda v, \lambda \ne 0, A\) - матрица \({n \times n}\)
 \\
@@ -7,14 +7,24 @@
 Проблема распадается на:
 \begin{enumerate}
     \item Полную: найти все собственные числа/вектора 
-    \item Нахождение min, max,  \(2^{nd}\) max, etc.
+    \item Частичную: Нахождение min, max, second max(второй по величине), etc.
 \end{enumerate}
-\\
-Теорема Островского (1920 г.)  \\
-Пусть \(A_{n \times n}, B_{n \times n}, M = max\{ |a_{ij}|, |b_{ij}|\}, \delta = \frac{1}{M}\sum_{i,j}|a_{ij} - b_{ij}|\) \\
-В таком случае можно пронумеровать собственные числа матриц \(A, B\) так, что \(\forall v |\lambda_0\langle A \rangle - \lambda_0\langle V \rangle| \leq 2 * (n+1)^2 *M * \delta^{\frac{1}{n}} \) \\
-Возмущение: \(\delta \rightarrow \infty\) \\
-\[\delta^{\frac{1}{n}} \rightarrow \infty \Rightarrow 2 * (n+1)^2 *M * \delta^{\frac{1}{n}} \rightarrow \infty \] \\
+А так же необходимо понять насколько найденное решение устойчиво к возмущениям?
+\newline
+
+\subsection{Устойчивость}
+\subsubsection{Теорема Островского (1920 г.)}  
+Пусть \(A_{n \times n}, B_{n \times n}, M = max\{ |a_{ij}|, |b_{ij}|\}, \delta = \frac{1}{nM}\sum_{i,j}|a_{ij} - b_{ij}|\) \\
+В таком случае можно пронумеровать собственные числа матриц \(A, B\) так, что \[ (\forall v\ |\lambda_0\langle A \rangle - \lambda_0\langle B \rangle| \leq 2 * (n+1)^2 *M * \delta^{\frac{1}{n}} ) \]
+
+Практический смысл такой: 
+\begin{itemize}
+    \item При небольших возмущениях: \(\delta \rightarrow 0\)  
+    \item Получили что $\delta^{\frac{1}{n}} \rightarrow \infty \Rightarrow 2 * (n+1)^2 *M * \delta^{\frac{1}{n}} \rightarrow \infty $, потенциально неограниченный рост разности модулей собственных чисел, оценка получилась не очень полезной.
+
+\end{itemize}
+
+\subsubsection{Пример}
 Из Уилкинсона "Алгебраическая проблема собственных значений": \\
     \[
     A = 
@@ -89,21 +99,20 @@
     \[
     = (20-\lambda) 
     det \begin{pmatrix}
-    20-\lambda & 20 & 0 &\cdots & \cdots &\cdots & \cdots &0  \\
-    0 & 19-\lambda & 20 & 0 & \cdots &\cdots  & \cdots & 0\\
-    0 & 0 & 18-\lambda & 20 & 0 &\cdots & \cdots & 0\\
-    0 &\cdots& 0 & 17-\lambda & 20 & 0 & \cdots & 0\\
-    \vdots & \ddots & \ddots & \ddots & \ddots & \ddots & \ddots & \vdots \\
+    & 19-\lambda & 20 & 0 & \cdots &\cdots  & \cdots & 0\\
+    & 0 & 18-\lambda & 20 & 0 &\cdots & \cdots & 0\\
+    &\cdots& 0 & 17-\lambda & 20 & 0 & \cdots & 0\\
+    & \ddots & \ddots & \ddots & \ddots & \ddots & \ddots & \vdots \\
 
-    0 & \cdots & \cdots & \cdots & \cdots & \cdots & 2-\lambda & 20\\
+    & \cdots & \cdots & \cdots & \cdots & \cdots & 2-\lambda & 20\\
     
-    0 & \cdots & \cdots & \cdots & \cdots & \cdots & \cdots & 1-\lambda
+    & \cdots & \cdots & \cdots & \cdots & \cdots & \cdots & 1-\lambda
     \end{pmatrix}
     - \] \\
     \[
     -20 * 
     det \begin{pmatrix}
-    20-\lambda & 20 & 0 &\cdots & \cdots &\cdots & \cdots &0  \\
+    0 & 20 & 0 &\cdots & \cdots &\cdots & \cdots &0  \\
     0 & 19-\lambda & 20 & 0 & \cdots &\cdots  & \cdots & 0\\
     0 & 0 & 18-\lambda & 20 & 0 &\cdots & \cdots & 0\\
     0 &\cdots& 0 & 17-\lambda & 20 & 0 & \cdots & 0\\
@@ -114,7 +123,18 @@
     \epsilon & \cdots & \cdots & \cdots & \cdots & \cdots & \cdots & 1-\lambda
     \end{pmatrix} =\]
     \(= (20- \lambda)(19-\lambda)\cdots(1-\lambda)-20^{19}\epsilon\) \\
-    Свободный член этого многочлена при \(\epsilon = 4,64*10^{-7}\) будет равен нулю \(\Rightarrow\) появляется собственное число равное 0, меняется характер особенности. \\ \\
+Свободный член этого многочлена при \(\epsilon = 4,64*10^{-7}\) будет равен нулю \(\Rightarrow\) появляется собственное число равное 0, меняется характер особенности.
+\\ \\
+\textbf{Итак получили:} даже небольшое возмущение матрицы(порядка float), приводит к:
+    \begin{enumerate}
+        \item Изменению характера особенности
+        \item Изменение характера собственного числа
+    \end{enumerate}
+\\
+
+    Можно ли добиться большей устойчивости?
+
+    \subsection{Квадратная диагонализируемая матрица}
     Квадратная матрица называется диагонализируемой, если:
     \begin{enumerate}
         \item В её канонической жордановой форме есть только тривиальные клетки
@@ -124,19 +144,29 @@
     \textbf{Утверждение.} Любая квадратная матрица может быть сколько угодно малыми возмущениями преобразована в диагонализируемую. \\
     
     \textbf{Теорема Бауэра-Файка (1960 г.).} Пусть A - диагонализируемая квадратная матрица, \(\{\lambda_i\}\) - собственные числа, \(M = \Delta A,\tilde{\lambda}\) - собственные числа возмущенной матрицы. \\
-    Тогда min \(min\{\lambda_i - \tilde{\lambda}\} \leq cond_2(V) ||\Delta A||_2 , V\) - матрица собственных векторов \(A\) \\
+    Тогда \(min\{\lambda_i - \tilde{\lambda}\} \leq cond_2(V) ||\Delta A||_2 , V\) - матрица собственных векторов \(A\) \\
+    Проблема с $cond_2$: неоднозначно определено, тк $V$ неопределено -> справо неизвестно что. \\
     
     \textbf{Степенной метод} \\
-    Идея: \(Av = \lambda v \Rightarrow A(Av) = \lambda(Av) \Rightarrow \lambda \cong \frac{A(Av)}{Av} \Rightarrow A(A^2v) = \lambda(A^2v) \Rightarrow \lambda = \frac{A(A^2v)}{A^2v}\) \\
+    Идея: $(Av = \lambda v \Rightarrow A(Av) = \lambda(Av) \Rightarrow \lambda \cong \frac{A(Av)}{Av} $ \\ $\Rightarrow $$A(A^2v) = \lambda(A^2v) \Rightarrow \lambda = \frac{A(A^2v)}{A^2v}$ \\
     
     Выберем \(x^{(0)}\) - начальный вектор,\( x^{(k)} = A^{(k)}x{(0)}, x^{(k + 1)} = A^{(k + 1)}x{(0)}, \lambda = \frac{x^{(k+1)}}{x^{(n)}}\) - определено только когда они коллинеарны, отсюда вытекает проблема. \\
-
+    Тогда сам метод: 
+    \begin{enumerate}
+        \item $x^{(0)}$ - начальный вектор 
+        \item $x^{(k)} = A^{(k)}x^{(0)}$
+        \item $x^{(k+1)} = A^{(k+1)}x^{(0)}$
+        \item $\lambda = \frac{x^{(k+1)}}{x^{(k)}}$
+    \end{enumerate}
+    \\  
+    Но есть проблема: отношение векторов известно только если они коллинеарны.
+    \\ Идея решения:
     \begin{itemize}
         \item Пусть i фиксированное, тогда \(\lambda \approx \frac{x_i^{k+1}}{x_i^{k}}\)
         \item Пусть \(L^{(k)}\) - направление. Тогда \(\lambda = \frac{\langle x^{k+1}, L^{n} \rangle}{\langle x^{k}, L^{n} \rangle}, L^{(n)} = x^{(n)}\)
     \end{itemize} \\
 
-    \textbf{Теорема.} Пусть \(A\) - диагонализируемая квадратная матрица с доминирующим собственным числом крастности 1. Пусть \(v_1\) - доминирующий собственный вектор. Если \(x^{(0)} \notin span\{v_2,v_3,\cdots,v_n\}\), то степенной метод сходится к доминирующему собственному вектору из начального приближения \(x^{(0)}\) \\
+    \textbf{Теорема.} Пусть \(A\) - диагонализируемая квадратная матрица с доминирующим собственным числом кратности 1. Пусть \(v_1\) - доминирующий собственный вектор. Если \(x^{(0)} \notin span\{v_2,v_3,\cdots,v_n\}\), то степенной метод сходится к доминирующему собственному вектору из начального приближения \(x^{(0)}\) \\
 
     \textbf{Доказательство.} \(A\) - диагонализируема \(\Rightarrow \exists V(A = VDV^{-1}), D = diag \{\lambda_1, \lambda_2, \cdots, \lambda_n\}\), не умаляя общности \(\lambda_1\) - доминирующий \\
 
@@ -157,14 +187,15 @@
     \end{pmatrix} \Rightarrow (\lambda_1^kz_1)V  \begin{pmatrix} 1 \\ 0 \\ \vdots \\ 0 \end{pmatrix} = Cv_1
     \)
     \\
+    То есть получили что метод сходится как раз таки к доминирующему собственному вектору.
 
-    На практике используется мультистарт \(x_1^{(0)}, x_2^{(0)} \vdots\) \\
+    Для соблюдения того что $x^{(0)}$, не принидлежит линейной оболочке(в частности не является собственным вектором) на практике используется мультистарт \(x_1^{(0)}, x_2^{(0)} \сdots\) \\
 
     \textbf{Круги Гершгорина} \\
     Пусть \(v\) - собственный вектор \(A\). Пусть \(l = max_{1 \leq j \leq n}|v_j|, Av = \lambda v, \sum^n_{j=1} a_{lj}v_{j}=\lambda v l \Rightarrow \sum_{j\neq l} a_{l,j}v_{j} = (\lambda - a_{ll})v_l\) \\
     \(|\lambda - a_{ll}||v_l| \leq |\sum_{i \neq j} a_{lj}v_j| \leq \sum_{i \neq j} |a_{lj}||v_j| \leq |v_l|\sum_{j\neq l}|a_{lj}|\), получим \(|\lambda - a_{ll}| \leq \sum_{j \neq l} |a_{lj}|\) \\
 
-    \textbf{Матрица вращений.} Вращение вектора в \(R^n\) относительно O \(x_k x_l\).
+    \textbf{Матрица вращений Гивенса.} Вращение вектора в \(R^n\) относительно O \(x_k x_l\).
     \[
     G(k, l, \Theta) = 
     \begin{pmatrix}
@@ -181,11 +212,30 @@
     \end{pmatrix}
     \] \\
     det(G) = 1 \\
+    Основная идея в том чтобы занулить часть компонентов\\
+    \textbf{Метод Якоби.} 
+    Работает для симметричных матриц. Помним что:
+    \newline 1) Матрица собственных чисел 
+    \newline 2) В SVD есть симметричная матрица $\begin{pmatrix}
+        0 & A^T \\
+        A& 0
+    \end{pmatrix}$\\
+    Называется Якоби потому, что он это использовал в 1846г на матрице 7х7, переоткрыли в 1950-ые.\\
+
+    Идея:
+    \newline 1) Уменьшает норму внедиагональной части
+    \newline 2) Матрица стремится к диагональной
+    \newline 3) У нее собственные числа на диагонали \\
     
-    \textbf{Метод Якоби.} \(A^{(0)} = A; A^{k+1}=G(p,q,\Theta)^TA^{(k)}G(p,q,\Theta)\) \\
 
-    \textbf{Утверждеине.} Фрабенциева норма матрицы \(||A||_F = (\sum_{i \neq j}a_{ij}^2)^{\frac{1}{2}}\) не изменяется при левом и правом умножении на ортогональную матрицу. \\
+    Метод:
+    \newline $A^{(0)} = A$ 
+    \newline $A^{k+1}=G(p,q,\Theta)^TA^{(k)}G(p,q,\Theta) $\\
 
+    Выбор $\Theta$ проводится так чтобы занулить два внедиагональных элемента\\ \\ 
+    Почему такой метод сходится?\\ \\ 
+\textbf{Утверждение.} Фробениусова норма матрицы \(||A||_F = (\sum_{i \neq j}a_{ij}^2)^{\frac{1}{2}}\) не изменяется при левом и правом умножении на ортогональную матрицу. \\
+    
     \textbf{Доказательство:} Пусть \(tr A = \sum_ia_{ij}; ||A||_F = (tr(A^TA))^{\frac{1}{2}}\) \\
     Пусть \(Q\) - ортогональная, \(\Rightarrow ||QA||_F=(tr((QA)^TQA)^{\frac{1}{2}} = (tr(A^TA))^{\frac{1}{2}} = ||A||_F\) \\
     Следствие: \(||A^{k+1}||_F=||A^k||_F=\cdots=||A|||_F\) \\

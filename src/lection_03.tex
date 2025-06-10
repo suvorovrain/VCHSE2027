@@ -31,13 +31,13 @@
     \end{cases}
 \end{equation}
 
-При приближении к краям начинаются проблемы. Способы решения: 1) не будем строить сплайны, тогда потеряем качество аппроксимации на краях; 2) дополнить сетку фиктивными узлами (по два слева и справа).
+При приближении к краям начинаются проблемы. Способы решения: \newline1) не будем строить сплайны, тогда потеряем качество аппроксимации на краях;\newline 2) дополнить сетку фиктивными узлами (по два слева и справа).
 
 \textbf{Утв.}
 \begin{enumerate}
     \item $B_{j,d}(t)$ зависит только от узлов $ x_j, x_{j+1}, ..., x_{j+d+1} $.
-    \item $ B_{j,d}(t) = 0 $ при $ x \in [x_j; x_{j+1}] $.
-    \item $ \forall x \in (x_j; x_{j+1}) B_{j,d}(t) > 0 $.
+    \item $ B_{j,d}(x) = 0 $ при $ x \notin [x_j; x_{j+1}] $.
+    \item $ \forall x \in (x_j; x_{j+1}) B_{j,d}(x) > 0 $.
     \item $ B_{j,d}(t) \in C^{d-1}[a; b] $.
     \item $ \sum_{i=-2}^{n-1} B_{i,d}(t) = 1 $.
 \end{enumerate}
@@ -49,9 +49,9 @@ $ \tilde{f}(x) = \sum_{j=-2}^{n-1} c_j B_{j,2}(t) $.
 
 Как выбрать $c_j$? Целая теория...
 
-$ x^*_j = \frac{x_{j+1} + x_{j+1} + ... + x_{j+d}}{d} $ - точки Гревилля.
+$ x^*_j = \frac{x_{j+1} + x_{j+2} + ... + x_{j+d}}{d} $ - точки Гревилля.
 
-$ \tilde{f}(x) = \sum_{j \in \mathbb{Z}} f(x^*_j) B_{j,d}(t) $ $\to$ \textbf{variation dimishing approximation}.
+$ \tilde{f}(x) = \sum_{j \in \mathbb{Z}} f(x^*_j) B_{j,d}(t) $ $\to$ \textbf{variation diminishing approximation}.
 
 \subsubsection{Свойства аппроксимации}
 
@@ -102,15 +102,15 @@ GB-сплайны, NUAT B-сплайны, минимальные сплайны.
 
 Потребуем точности на наборе функций:
 
-$ f(x) = 1 \Rightarrow f^{(k)}(x) = 0 $
+$ f(x) = 1 \Rightarrow f^{(k)}(x) = 0 $ \quad (при $k \geq 1$)
 
-$ f(x) = x \Rightarrow f^{(k)}(x) = 0 $
+$ f(x) = x \Rightarrow f^{(k)}(x) = 0 $ \quad (при $k \geq 2$)
 
-$ f(x) = x^{k-1} \Rightarrow f^{(k)}(x) = 0 $
+$ f(x) = x^{k-1} \Rightarrow f^{(k)}(x) = 0 $ \quad (при $k \geq 1$)
 
 $ f(x) = x^k \Rightarrow f^{(k)}(x) = k! $
 
-$ f(x) = x^p \Rightarrow f^{(k)}(x) = p (p - 1) ... (p - k + 1) x^{p - k} $
+$ f(x) = x^p \Rightarrow f^{(k)}(x) = p (p - 1) ... (p - k + 1) x^{p - k} $ \quad (при $k \leq p$)
 
 \begin{equation}
     \begin{cases}

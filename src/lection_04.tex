@@ -15,6 +15,7 @@
 1) Погрешность численного метода.\\
 2) Погрешность вычислений: $f_{i}\to \tilde{f}_i $ \\
 
+Допустим $\delta$ - максимальная абсолютная погрешность вычисления значения функции
 Пусть $\delta: |\tilde{f}_i-f_i| \leq \delta $ \\
 К тому же: $|f_{i+1}-\tilde{f}_{i+1}| \leq \delta $ \\
 
@@ -39,15 +40,15 @@ $\frac{\partial}{\partial h}(\frac{2\delta}{h} + \frac{M_2}{2}h) = \frac{-2\delt
 Однако не всегда существует F.\\
 Идея:\\
 \[
-f(x) \approx \sum\limits_{i=0}^{n}f(x_k)\gamma_k(x) \Rightarrow \int\limits_{a}^{b} f(x) \, dx  =  \sum\limits_{i=0}^{n} ( \underbrace{\int\limits_{a}^{b} \gamma_k(x) \, dx}_{c_k} ) f(x_k)\\
+f(x) \approx \sum\limits_{k=0}^{n}f(x_k)\gamma_k(x) \Rightarrow \int\limits_{a}^{b} f(x) \, dx  =  \sum\limits_{k=0}^{n} ( \underbrace{\int\limits_{a}^{b} \gamma_k(x) \, dx}_{c_k} ) f(x_k)\\
 \]\\
 
 \begin{equation}
-\int_{a}^{b} f(x) \, dx  \equiv  \sum\limits_{i=0}^{n} {c_k}  f(x_k)
+\int_{a}^{b} f(x) \, dx  \equiv  \sum\limits_{k=0}^{n} {c_k}  f(x_k)
 \end{equation}
 Здесь $\gamma_k$ --- интегрируемые функции\\
 $c_k$ --- весовые коэффициенты\\
-(21) --- квадратурные формулы\\
+(23) --- квадратурные формулы\\
 
 \textbf{Определение}\\
 Алгебраическая степени точности (АСТ) квадратурной формулы --- наибольшая степень полинома, такого, что для него формула точна. То есть:\\
@@ -73,7 +74,7 @@ $c_k$ --- весовые коэффициенты\\
 f(x) = f(\frac{a+b}{2}) +f'(\frac{a+b}{2})(x- \frac{a+b}{2}) + f''(\xi)(x- \frac{a+b}{2})^2 , \xi \in [a;b]
 \]
 \[
-R(f) = |\int\limits_{a}^{b} f(x) \, dx  - (b-a)f(\frac{a+b}{2})| = |\int\limits_{a}^{b} (f(x)-f(\frac{a+b}{2})) \, dx| =
+R(f) = |\int\limits_{a}^{b} f(x) \, dx  - (b-a)f(\frac{a+b}{2})| =|\int\limits_{a}^{b} f(x) \, dx  - f(\frac{a+b}{2})\int\limits_{a}^{b}1 dx| = |\int\limits_{a}^{b} (f(x)-f(\frac{a+b}{2})) \, dx| =
 \]
 \[ = |\int\limits_{a}^{b} f'(\frac{a+b}{2})(x-\frac{a+b}{2}) \, dx + \int\limits_{a}^{b} f''(\xi)(x- \frac{a+b}{2})^2 \, dx| \leq |f''(\xi)|\int\limits_{a}^{b}(x- \frac{a+b}{2})^2 \, dx = \frac{M_2}{24}(b-a)^3
 \]\\
@@ -134,7 +135,7 @@ c_0 + c_1\omega + c_2\omega^2 = f(b)\\
 Идея: Управлять не только весами, но и узлами.\\
 Выберем узлы и веса так, чтобы максимизировать АСТ.\\
 \[
-\int_{a}^{b} f(x) \, dx  =  \sum\limits_{i=1}^{n} {c_k}  f(x_k)
+\int_{a}^{b} f(x) \, dx  =  \sum\limits_{k=1}^{n} {c_k}  f(x_k)
 \]
 \textit{Нумерация с 1!}\\
 Точность: $1,x,x^2,...,x^m$\\
@@ -204,7 +205,7 @@ c_1x^3_1 + c_2x^3_2 = \frac{1}{4}(b^4-a^4)
 Получили почти формулу трапеций, только в специальных узлах.\\
 
 \textbf{Теорема}\\
-Квадратурная формула Гаусса, построенная по n узлам, обладает наивысшей АСТ $\Leftrightarrow 2n-1 \Leftrightarrow\\$
+Квадратурная формула Гаусса, построенная по n узлам, обладает наивысшей АСТ равной 2n-1 \Leftrightarrow\\$
 1) Это интерполяционная квадратурная формула\\
 2) Её узлы $x_1,..,x_k$ являются корнями многочлена:\\
 $\omega(x) = (x-x_1)(x-x_2)...(x-x_k)$ такого, что:\\
@@ -238,7 +239,7 @@ $P_3(x) = \frac{1}{8}(63x^5-70x^3+15x)$\\
 $\dots$\\
 $\underset{[a;b]}{X_k} = \frac{1}{2}(a+b) +\frac{1}{2}(b-a)\underset{[-1;1]}{X_k}$\\
 $\underset{[a;b]}{C_k}=\frac{1}{2}(b-a)\underset{[-1;1]}{C_k}$\\
-Извстно, что $C_k = \frac{2}{(1-x^2_k)(L'_n(x_k))^2}$ \textit{Символы Кристоффеля (1858))} \\
+Извeстно, что $C_k = \frac{2}{(1-x^2_k)(L'_n(x_k))^2}$ \textit{Символы Кристоффеля (1858)} \\
 \\
 Существуют также формулы Филона для быстро осциллирующих функций.
 \subsubsection{Несобственные интегралы:}
@@ -251,7 +252,7 @@ $\underset{[a;b]}{C_k}=\frac{1}{2}(b-a)\underset{[-1;1]}{C_k}$\\
 \begin{equation}
 \Rightarrow \int\limits_{-\infty}^{\infty} f(x) \, dx = h\sum\limits_{i=-\infty}^{\infty}f(ih)
 \end{equation}
-(22) --- формула трапеций  для бесконечного случая.\\
+(24) --- формула трапеций  для бесконечного случая.\\
 Теперь рассмотрим$\int\limits_{-1}^{1} f(x) \, dx $ с особенностями в -1 и 1.\\
 \[
 x = th(\frac{t}{2}) = \frac{e^{\frac{t}{2}}-e^{-\frac{t}{2}}}{e^{\frac{t}{2}} + e^{-\frac{t}{2}}} = \frac{e^t-1}{e^t+1}; \,dx = \frac{2e^t}{(e^t+1)^2}dt

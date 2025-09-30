@@ -136,7 +136,7 @@ $F(x)=0; F \in C[a; b]; F(a)F(b) < 0 \implies \exists x^* \in [a; b]: F(x^*)=0$ 
 Как считать $\frac{\partial^k \varphi(F(x_i))}{\partial y^k}$?
 \begin{enumerate}
 	\item $y=F(x)$. $\varphi(F(x)) = x$. $\varphi'_y (F(x))F'(x) = 1 \implies \frac{\partial \varphi (F(x))}{\partial y} = \frac{1}{F'(x)}$, $F'(x)$ отдалена от нуля
-	\item $\frac{d}{dx}[\varphi'_y (F(x))F'(x)] = 0$. $\varphi'_y (F(x))(F'(x))^2 + \varphi'_y (F(x))F''(x) = 0 \implies \frac {\partial^2 \varphi(F(x))}{\partial^2 y}$ можно выразить: $\varphi''_y (F(x)) = - \frac {\varphi'_y(F(x))F''(x)}{(F'(x))^2}$
+	\item $\frac{d}{dx}[\varphi'_y (F(x))F'(x)] = 0$. $\varphi''_y (F(x))(F'(x))^2 + \varphi'_y (F(x))F''(x) = 0 \implies \frac {\partial^2 \varphi(F(x))}{\partial^2 y}$ можно выразить: $\varphi''_y (F(x)) = - \frac {\varphi'_y(F(x))F''(x)}{(F'(x))^2}$
 \end{enumerate}
 
 
@@ -185,7 +185,7 @@ $\forall x_0$ метод Ньютона не сходится к решению.
 \item $x_{n+1} = f(x_n)$
 \end{enumerate}
 \paragraph{Дополнительные ограничения.} \begin{itemize}
-\item Пусть $\delta$ --- фиксированное число. $\Omega\delta = \{x_0: \vert x - x_0 \vert < \delta \}$. Тогда $f$ должна быть определена в $\Omega \delta$
+\item Пусть $\delta$ --- фиксированное число. $\Omega\delta = \{x: \vert x - x_0 \vert < \delta \}$. Тогда $f$ должна быть определена в $\Omega \delta$
 \item $\forall x', x'' \in \Omega\delta: \vert f(x'') - f(x') \vert < L\vert x'' - x' \vert, L < 1$ --- условие Липшица
 \end{itemize}
 Докажем существование и единственность решения.
@@ -226,7 +226,7 @@ $\forall n: x_n \in \Omega\delta \implies x^* \in \Omega\delta$.
 	\vert x_1^* - x_2^* \vert = \vert f(x_1^*) - f(x_2^*)\vert < L\vert x_1^* - x_2^* \vert \implies L > 1 \ ?!
 \]
 Единственность решения доказана.
-\paragraph{Теорема.} Пусть $f$ определена на $\Omega\delta$ и удовлетворяет условию Липшица с $L > 1$. Если $\frac{m}{1-L} < \delta$, то $\forall n: x_n \in \Omega \delta$ и метод простой итерации сходится к единственной неподвижной точке $x^*$, при этом верна оценка $\vert x_n - x^*\vert < \frac {m}{1-L}L^n$.
+\paragraph{Теорема.} Пусть $f$ определена на $\Omega\delta$ и удовлетворяет условию Липшица с $L < 1$. Если $\frac{m}{1-L} < \delta$, то $\forall n: x_n \in \Omega \delta$ и метод простой итерации сходится к единственной неподвижной точке $x^*$, при этом верна оценка $\vert x_n - x^*\vert < \frac {m}{1-L}L^n$.
 \subsection{Метод Ньютона решения систем}
 Дана система.
 \[
